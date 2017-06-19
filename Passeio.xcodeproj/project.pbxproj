@@ -8,12 +8,13 @@
 
 /* Begin PBXBuildFile section */
 		929430FD1EF756000015CF3A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 929430FC1EF756000015CF3A /* AppDelegate.swift */; };
-		929430FF1EF756000015CF3A /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 929430FE1EF756000015CF3A /* ViewController.swift */; };
 		929431021EF756000015CF3A /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 929431001EF756000015CF3A /* Main.storyboard */; };
 		929431041EF756000015CF3A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 929431031EF756000015CF3A /* Assets.xcassets */; };
 		929431071EF756000015CF3A /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 929431051EF756000015CF3A /* LaunchScreen.storyboard */; };
 		929431121EF756000015CF3A /* PasseioTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 929431111EF756000015CF3A /* PasseioTests.swift */; };
 		9294311D1EF756000015CF3A /* PasseioUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9294311C1EF756000015CF3A /* PasseioUITests.swift */; };
+		9294312B1EF75E280015CF3A /* PasseioTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9294312A1EF75E280015CF3A /* PasseioTableViewController.swift */; };
+		9294312E1EF75F590015CF3A /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9294312D1EF75F590015CF3A /* MapViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -36,7 +37,6 @@
 /* Begin PBXFileReference section */
 		929430F91EF756000015CF3A /* Passeio.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Passeio.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		929430FC1EF756000015CF3A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		929430FE1EF756000015CF3A /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		929431011EF756000015CF3A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		929431031EF756000015CF3A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		929431061EF756000015CF3A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -47,6 +47,8 @@
 		929431181EF756000015CF3A /* PasseioUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PasseioUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		9294311C1EF756000015CF3A /* PasseioUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasseioUITests.swift; sourceTree = "<group>"; };
 		9294311E1EF756000015CF3A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		9294312A1EF75E280015CF3A /* PasseioTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasseioTableViewController.swift; sourceTree = "<group>"; };
+		9294312D1EF75F590015CF3A /* MapViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -97,12 +99,10 @@
 		929430FB1EF756000015CF3A /* Passeio */ = {
 			isa = PBXGroup;
 			children = (
-				929430FC1EF756000015CF3A /* AppDelegate.swift */,
-				929430FE1EF756000015CF3A /* ViewController.swift */,
+				9294312C1EF75E5B0015CF3A /* Supporting Files */,
 				929431001EF756000015CF3A /* Main.storyboard */,
-				929431031EF756000015CF3A /* Assets.xcassets */,
-				929431051EF756000015CF3A /* LaunchScreen.storyboard */,
-				929431081EF756000015CF3A /* Info.plist */,
+				9294312A1EF75E280015CF3A /* PasseioTableViewController.swift */,
+				9294312D1EF75F590015CF3A /* MapViewController.swift */,
 			);
 			path = Passeio;
 			sourceTree = "<group>";
@@ -123,6 +123,17 @@
 				9294311E1EF756000015CF3A /* Info.plist */,
 			);
 			path = PasseioUITests;
+			sourceTree = "<group>";
+		};
+		9294312C1EF75E5B0015CF3A /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				929430FC1EF756000015CF3A /* AppDelegate.swift */,
+				929431031EF756000015CF3A /* Assets.xcassets */,
+				929431051EF756000015CF3A /* LaunchScreen.storyboard */,
+				929431081EF756000015CF3A /* Info.plist */,
+			);
+			path = "Supporting Files";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -256,7 +267,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				929430FF1EF756000015CF3A /* ViewController.swift in Sources */,
+				9294312B1EF75E280015CF3A /* PasseioTableViewController.swift in Sources */,
+				9294312E1EF75F590015CF3A /* MapViewController.swift in Sources */,
 				929430FD1EF756000015CF3A /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -307,6 +319,7 @@
 				929431061EF756000015CF3A /* Base */,
 			);
 			name = LaunchScreen.storyboard;
+			path = ..;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
@@ -425,7 +438,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.lucassc.Passeio;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -439,7 +452,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.lucassc.Passeio;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};
