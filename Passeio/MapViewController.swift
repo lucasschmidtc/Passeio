@@ -7,20 +7,42 @@
 //
 
 import UIKit
+import MapKit
 
-class MapViewController: UIViewController {
-
+class MapViewController: UIViewController, MKMapViewDelegate {
+    var track: Track!
+    
+    @IBOutlet weak var mapView: MKMapView! {
+        didSet {
+            mapView.mapType = .standard
+            mapView.delegate = self
+            
+            if track != nil {
+                for segment in track.segments {
+                    mapView.addAnnotations(segment)
+                }
+            }
+        }
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
+    }
+    
+    func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
+        let view = mapView.dequeueReusableAnnotationView(withIdentifier: "Waypoint", for: annotation)
+        view.canShowCallout = true
+        view.leftCalloutAccessoryView = nil
+        view.rightCalloutAccessoryView = nil
+        return view
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    
 
     /*
     // MARK: - Navigation
