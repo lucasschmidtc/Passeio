@@ -16,29 +16,35 @@ class Track {
         return formatter
     }()
     
+    // TODO: make it private if possible
+    var track = [[Waypoint]]()
     private lazy var geocoder = CLGeocoder()
-    private var timestamp: Date?
-    private var track = [[Waypoint]]() {
-        didSet {
-            if count > 0, placemark == nil {
-                DispatchQueue.global(qos: .userInitiated).async { [weak self] in
-                    if let location = self?.track.first?.first?.original {
-                        self?.geocoder.reverseGeocodeLocation(location) { [weak self] (placemarks, error) in
-                            if error == nil {
-                                DispatchQueue.main.async { [weak self] in
-                                    self?.placemark = placemarks?.first
-                                }
+    private var placemark: CLPlacemark?
+    
+    private var firstLocation: CLLocation? {
+        get {
+            return track.first?.first?.original
+        }
+    }
+    
+    private var timestamp: Date? {
+        return firstLocation?.timestamp
+    }
+    
+    private func setPlacemark() {
+        if placemark == nil, count > 0 {
+            DispatchQueue.global(qos: .userInitiated).async { [weak self] in
+                if let location = self?.firstLocation {
+                    self?.geocoder.reverseGeocodeLocation(location) { [weak self] (placemarks, error) in
+                        if error == nil {
+                            DispatchQueue.main.async { [weak self] in
+                                self?.placemark = placemarks?.first
                             }
                         }
                     }
                 }
             }
         }
-    }
-    private var placemark: CLPlacemark?
-    
-    func addPoints(_ points: [Waypoint]) {
-        track.append(points)
     }
     
     var count: Int {
@@ -53,21 +59,35 @@ class Track {
     
     var title: String {
         get {
-            let location = [placemark?.name, placemark?.subLocality, placemark?.locality, placemark?.subAdministrativeArea, placemark?.administrativeArea, placemark?.country, placemark?.inlandWater, placemark?.ocean, track.first?.first?.original.latlon, "Location not yet defined"].flatMap {$0}.first!
-            
-            if timestamp != nil {
-                return location + " (" + Track.dateFormatter.string(from: timestamp!) + ")"
+            if placemark == nil {
+                setPlacemark()
             }
+            
+            let location = [placemark?.name, placemark?.subLocality, placemark?.locality,
+                            placemark?.subAdministrativeArea, placemark?.administrativeArea,
+                            placemark?.country, placemark?.inlandWater, placemark?.ocean,
+                            track.first?.first?.original.latlon,
+                            "Location not yet defined"].flatMap {$0}.first!
+            
             return location
         }
     }
     
     var subtitle: String {
         get {
+            var sub: String
             if count == 1 {
-                return "1 observation"
+                sub = "1 observation"
             }
-            return String(count) + " observations"
+            else {
+                sub = String(count) + " observations"
+            }
+            
+            if timestamp != nil {
+                sub = " since " + Track.dateFormatter.string(from: timestamp!)
+            }
+            
+            return sub
         }
     }
 }
