@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13122.17" systemVersion="16F73" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="ecO-Zi-EdT">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13122.17" systemVersion="16F73" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="ecO-Zi-EdT">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13104.14"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--Passeio Table View Controller-->
+        <!--Tracks-->
         <scene sceneID="IoR-6s-9Z5">
             <objects>
                 <tableViewController id="Rrd-tF-F5I" customClass="PasseioTableViewController" customModule="Passeio" customModuleProvider="target" sceneMemberID="viewController">
@@ -50,7 +51,7 @@
                             <outlet property="delegate" destination="Rrd-tF-F5I" id="yo0-sd-YhW"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" id="65D-eX-GEZ"/>
+                    <navigationItem key="navigationItem" title="Tracks" id="65D-eX-GEZ"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="pyQ-dr-YZx" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -60,30 +61,30 @@
         <scene sceneID="tym-Vg-swO">
             <objects>
                 <viewController id="gMT-yU-WnL" customClass="MapViewController" customModule="Passeio" customModuleProvider="target" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="5Xd-rr-IZM"/>
-                        <viewControllerLayoutGuide type="bottom" id="s9Z-Um-Fxs"/>
-                    </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="kIQ-gp-ws5">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="eoM-s1-3v4">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                                <rect key="frame" x="0.0" y="64" width="375" height="603"/>
                             </mapView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="eoM-s1-3v4" firstAttribute="bottom" secondItem="s9Z-Um-Fxs" secondAttribute="top" id="UOG-9e-0eg"/>
-                            <constraint firstItem="eoM-s1-3v4" firstAttribute="top" secondItem="kIQ-gp-ws5" secondAttribute="top" id="iTv-Of-Sqx"/>
-                            <constraint firstItem="eoM-s1-3v4" firstAttribute="leading" secondItem="kIQ-gp-ws5" secondAttribute="leading" id="oCy-Yl-TQJ"/>
-                            <constraint firstAttribute="trailing" secondItem="eoM-s1-3v4" secondAttribute="trailing" id="pwZ-kC-ELc"/>
+                            <constraint firstItem="eoM-s1-3v4" firstAttribute="top" secondItem="AiG-If-Exf" secondAttribute="top" id="EKu-QY-B85"/>
+                            <constraint firstItem="eoM-s1-3v4" firstAttribute="bottom" secondItem="AiG-If-Exf" secondAttribute="bottom" id="UOG-9e-0eg"/>
+                            <constraint firstItem="eoM-s1-3v4" firstAttribute="leading" secondItem="AiG-If-Exf" secondAttribute="leading" id="oCy-Yl-TQJ"/>
+                            <constraint firstItem="AiG-If-Exf" firstAttribute="trailing" secondItem="eoM-s1-3v4" secondAttribute="trailing" id="pwZ-kC-ELc"/>
                         </constraints>
+                        <viewLayoutGuide key="safeArea" id="AiG-If-Exf"/>
                     </view>
+                    <connections>
+                        <outlet property="mapView" destination="eoM-s1-3v4" id="Om2-Vp-vzE"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="UAu-72-rQS" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="406" y="70"/>
+            <point key="canvasLocation" x="405.5" y="69.5"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="obp-3r-HkI">
