@@ -9,6 +9,7 @@
 import UIKit
 
 class PasseioTableViewController: UITableViewController {
+    private var tracks = [Track]()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -28,24 +29,21 @@ class PasseioTableViewController: UITableViewController {
     // MARK: - Table view data source
 
     override func numberOfSections(in tableView: UITableView) -> Int {
-        // #warning Incomplete implementation, return the number of sections
-        return 0
+        return 1
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // #warning Incomplete implementation, return the number of rows
-        return 0
+        return tracks.count
     }
-
-    /*
+    
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath)
-
-        // Configure the cell...
+        let cell = tableView.dequeueReusableCell(withIdentifier: "Track Summary Cell", for: indexPath)
+        cell.textLabel?.text = tracks[indexPath.row].title
+        cell.detailTextLabel?.text = tracks[indexPath.row].subtitle
 
         return cell
     }
-    */
+    
 
     /*
     // Override to support conditional editing of the table view.
@@ -81,15 +79,18 @@ class PasseioTableViewController: UITableViewController {
         return true
     }
     */
-
-    /*
+    
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
+        if segue.identifier == "Map Editor" {
+            if let controller = segue.destination as? MapViewController {
+                if let selectedIndex = tableView.indexPathForSelectedRow {
+                    controller.track = tracks[selectedIndex.row]
+                }
+            }
+        }
     }
-    */
 
 }

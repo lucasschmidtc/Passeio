@@ -107,6 +107,7 @@
 			children = (
 				929431301EF885A60015CF3A /* Model */,
 				9294312C1EF75E5B0015CF3A /* Supporting Files */,
+				929431081EF756000015CF3A /* Info.plist */,
 				929431001EF756000015CF3A /* Main.storyboard */,
 				9294312A1EF75E280015CF3A /* PasseioTableViewController.swift */,
 				9294312D1EF75F590015CF3A /* MapViewController.swift */,
@@ -138,7 +139,6 @@
 				929430FC1EF756000015CF3A /* AppDelegate.swift */,
 				929431031EF756000015CF3A /* Assets.xcassets */,
 				929431051EF756000015CF3A /* LaunchScreen.storyboard */,
-				929431081EF756000015CF3A /* Info.plist */,
 			);
 			path = "Supporting Files";
 			sourceTree = "<group>";
