@@ -17,13 +17,13 @@ class Track {
     }()
     
     // TODO: make it private if possible
-    var track = [[Waypoint]]()
+    var segments = [[Waypoint]]()
     private lazy var geocoder = CLGeocoder()
     private var placemark: CLPlacemark?
     
     private var firstLocation: CLLocation? {
         get {
-            return track.first?.first?.original
+            return segments.first?.first?.original
         }
     }
     
@@ -49,7 +49,7 @@ class Track {
     
     var count: Int {
         get {
-            return track.reduce(0) {
+            return segments.reduce(0) {
                 return $0 + $1.count
             }
         }
@@ -66,8 +66,7 @@ class Track {
             let location = [placemark?.name, placemark?.subLocality, placemark?.locality,
                             placemark?.subAdministrativeArea, placemark?.administrativeArea,
                             placemark?.country, placemark?.inlandWater, placemark?.ocean,
-                            track.first?.first?.original.latlon,
-                            "Location not yet defined"].flatMap {$0}.first!
+                            firstLocation?.latlon, "Location not yet defined"].flatMap {$0}.first!
             
             return location
         }
