@@ -7,10 +7,18 @@
 //
 
 import UIKit
+import CoreLocation
 
-class PasseioTableViewController: UITableViewController, UISplitViewControllerDelegate {
+class PasseioTableViewController: UITableViewController, UISplitViewControllerDelegate, CLLocationManagerDelegate {
     private var tracks = [Track]()
-
+    private var locationManager = CLLocationManager()
+    
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        self.splitViewController?.delegate = self
+        self.splitViewController?.preferredDisplayMode = .allVisible
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -23,30 +31,72 @@ class PasseioTableViewController: UITableViewController, UISplitViewControllerDe
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
     }
     
-    // MARK: - UISplitViewControllerDelegate
+    // MARK: - Request for Location Services
     
-    override func awakeFromNib() {
-        super.awakeFromNib()
-        self.splitViewController?.delegate = self
-        self.splitViewController?.preferredDisplayMode = .allVisible
-    }
-    
-    func splitViewController(_ splitViewController: UISplitViewController,
-                             collapseSecondary secondaryViewController: UIViewController,
-                             onto primaryViewController: UIViewController) -> Bool {
-        
-        if primaryViewController.contents == self {
-            if let mapViewController = secondaryViewController.contents as? MapViewController {
-                if mapViewController.track == nil {
-                    return false
-                }
+    private var recordingsAllowed: Bool? {
+        didSet {
+            if recordingsAllowed == false {
+                self.navigationItem.rightBarButtonItem?.isEnabled = false
+            }
+            else {
+                self.navigationItem.rightBarButtonItem?.isEnabled = true
             }
         }
- 
-        return true
+    }
+    
+    private func alertRecordingIsNotAllowed() {
+        let alert = UIAlertController(title: "Location Services not allowed",
+                                      message: "Go to Settings, Privacy and then Location Services in order to enable it.",
+                                      preferredStyle: UIAlertControllerStyle.alert)
+        alert.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.default, handler: nil))
+        self.present(alert, animated: true, completion: nil)
+    }
+    
+    private func configureLocationManager() {
+        locationManager.delegate = self
+        let status = CLLocationManager.authorizationStatus()
+        
+        switch status {
+        case .notDetermined:
+            self.locationManager.requestAlwaysAuthorization()
+        case .restricted, .denied:
+            recordingsAllowed = false
+            alertRecordingIsNotAllowed()
+        case .authorizedAlways, .authorizedWhenInUse:
+            recordingsAllowed = true
+        }
+    }
+    
+    func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
+        switch status {
+        case .authorizedAlways, .authorizedWhenInUse:
+            recordingsAllowed = true
+        default:
+            recordingsAllowed = false
+        }
+    }
+    
+    // MARK: - Initiate a Recording
+    
+    private var currentlyRecording = false
+    @IBAction func record(_ sender: UIBarButtonItem) {
+        configureLocationManager()
+        if recordingsAllowed != nil, recordingsAllowed! == true {
+            if currentlyRecording {
+                self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add,
+                                                                         target: self,
+                                                                         action: #selector(self.record(_:)))
+                currentlyRecording = false
+            }
+            else {
+                self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .stop,
+                                                                         target: self,
+                                                                         action: #selector(self.record(_:)))
+                currentlyRecording = true
+            }
+        }
     }
     
     // MARK: - Table view data source
@@ -105,7 +155,6 @@ class PasseioTableViewController: UITableViewController, UISplitViewControllerDe
     
     // MARK: - Navigation
 
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "Map Editor" {
             if let controller = segue.destination.contents as? MapViewController {
@@ -115,5 +164,21 @@ class PasseioTableViewController: UITableViewController, UISplitViewControllerDe
             }
         }
     }
-
+    
+    // MARK: - UISplitViewController
+    
+    func splitViewController(_ splitViewController: UISplitViewController,
+                             collapseSecondary secondaryViewController: UIViewController,
+                             onto primaryViewController: UIViewController) -> Bool {
+        
+        if primaryViewController.contents == self {
+            if let mapViewController = secondaryViewController.contents as? MapViewController {
+                if mapViewController.track == nil {
+                    return false
+                }
+            }
+        }
+        
+        return true
+    }
 }

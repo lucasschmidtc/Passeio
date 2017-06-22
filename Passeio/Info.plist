@@ -20,6 +20,16 @@
 	<string>1</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>This is required for tracking while in usage and in the background.</string>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>This is required for tracking while in usage and in the background.</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>By limiting to &quot;when in usage&quot; the application won&apos;t be able to track while in the background, consider allowing to &quot;always on&quot;.</string>
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>location</string>
+	</array>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>
