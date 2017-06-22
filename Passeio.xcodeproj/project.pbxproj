@@ -18,6 +18,7 @@
 		929431321EF885BC0015CF3A /* Waypoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 929431311EF885BC0015CF3A /* Waypoint.swift */; };
 		929431341EF885C50015CF3A /* Track.swift in Sources */ = {isa = PBXBuildFile; fileRef = 929431331EF885C50015CF3A /* Track.swift */; };
 		929431361EF8DFE00015CF3A /* CLLocation Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 929431351EF8DFE00015CF3A /* CLLocation Extension.swift */; };
+		929431391EFB65BA0015CF3A /* UIViewController Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 929431381EFB65BA0015CF3A /* UIViewController Extension.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -55,6 +56,7 @@
 		929431311EF885BC0015CF3A /* Waypoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Waypoint.swift; sourceTree = "<group>"; };
 		929431331EF885C50015CF3A /* Track.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Track.swift; sourceTree = "<group>"; };
 		929431351EF8DFE00015CF3A /* CLLocation Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CLLocation Extension.swift"; sourceTree = "<group>"; };
+		929431381EFB65BA0015CF3A /* UIViewController Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController Extension.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -109,8 +111,7 @@
 				9294312C1EF75E5B0015CF3A /* Supporting Files */,
 				929431081EF756000015CF3A /* Info.plist */,
 				929431001EF756000015CF3A /* Main.storyboard */,
-				9294312A1EF75E280015CF3A /* PasseioTableViewController.swift */,
-				9294312D1EF75F590015CF3A /* MapViewController.swift */,
+				929431371EFB656B0015CF3A /* Controllers */,
 			);
 			path = Passeio;
 			sourceTree = "<group>";
@@ -151,6 +152,16 @@
 				929431351EF8DFE00015CF3A /* CLLocation Extension.swift */,
 			);
 			path = Model;
+			sourceTree = "<group>";
+		};
+		929431371EFB656B0015CF3A /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				9294312A1EF75E280015CF3A /* PasseioTableViewController.swift */,
+				9294312D1EF75F590015CF3A /* MapViewController.swift */,
+				929431381EFB65BA0015CF3A /* UIViewController Extension.swift */,
+			);
+			path = Controllers;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -288,6 +299,7 @@
 				929431321EF885BC0015CF3A /* Waypoint.swift in Sources */,
 				929431341EF885C50015CF3A /* Track.swift in Sources */,
 				9294312B1EF75E280015CF3A /* PasseioTableViewController.swift in Sources */,
+				929431391EFB65BA0015CF3A /* UIViewController Extension.swift in Sources */,
 				9294312E1EF75F590015CF3A /* MapViewController.swift in Sources */,
 				929430FD1EF756000015CF3A /* AppDelegate.swift in Sources */,
 			);
@@ -458,7 +470,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.lucassc.Passeio;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.0;
-				TARGETED_DEVICE_FAMILY = 1;
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
 		};
@@ -472,7 +484,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.lucassc.Passeio;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.0;
-				TARGETED_DEVICE_FAMILY = 1;
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
 		};

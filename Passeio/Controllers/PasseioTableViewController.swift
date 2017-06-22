@@ -8,7 +8,7 @@
 
 import UIKit
 
-class PasseioTableViewController: UITableViewController {
+class PasseioTableViewController: UITableViewController, UISplitViewControllerDelegate {
     private var tracks = [Track]()
 
     override func viewDidLoad() {
@@ -25,7 +25,30 @@ class PasseioTableViewController: UITableViewController {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-
+    
+    // MARK: - UISplitViewControllerDelegate
+    
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        self.splitViewController?.delegate = self
+        self.splitViewController?.preferredDisplayMode = .allVisible
+    }
+    
+    func splitViewController(_ splitViewController: UISplitViewController,
+                             collapseSecondary secondaryViewController: UIViewController,
+                             onto primaryViewController: UIViewController) -> Bool {
+        
+        if primaryViewController.contents == self {
+            if let mapViewController = secondaryViewController.contents as? MapViewController {
+                if mapViewController.track == nil {
+                    return false
+                }
+            }
+        }
+ 
+        return true
+    }
+    
     // MARK: - Table view data source
 
     override func numberOfSections(in tableView: UITableView) -> Int {
@@ -85,7 +108,7 @@ class PasseioTableViewController: UITableViewController {
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "Map Editor" {
-            if let controller = segue.destination as? MapViewController {
+            if let controller = segue.destination.contents as? MapViewController {
                 if let selectedIndex = tableView.indexPathForSelectedRow {
                     controller.track = tracks[selectedIndex.row]
                 }

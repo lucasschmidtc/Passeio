@@ -10,7 +10,7 @@ import UIKit
 import MapKit
 
 class MapViewController: UIViewController, MKMapViewDelegate {
-    var track: Track!
+    var track: Track?
     
     @IBOutlet weak var mapView: MKMapView! {
         didSet {
@@ -18,7 +18,7 @@ class MapViewController: UIViewController, MKMapViewDelegate {
             mapView.delegate = self
             
             if track != nil {
-                for segment in track.segments {
+                for segment in track!.segments {
                     mapView.addAnnotations(segment)
                 }
             }
