@@ -13,6 +13,7 @@ import CoreLocation
 class Waypoint: NSObject, MKAnnotation  {
     private var location: CLLocation
     private var position: CLLocationCoordinate2D
+    private var time: Date
     
     private static let dateFormatter: DateFormatter = {
         let formatter = DateFormatter()
@@ -24,12 +25,22 @@ class Waypoint: NSObject, MKAnnotation  {
     init(with location: CLLocation) {
         self.location = location
         self.position = location.coordinate
+        self.time = location.timestamp
         super.init()
     }
     
     var original: CLLocation {
         get {
             return location
+        }
+    }
+    
+    var timestamp: Date {
+        get {
+            return time
+        }
+        set {
+            time = newValue
         }
     }
     
