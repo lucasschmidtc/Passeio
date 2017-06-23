@@ -47,8 +47,12 @@ class PasseioTableViewController: UITableViewController, UISplitViewControllerDe
     }
     
     private func alertRecordingIsNotAllowed() {
-        let alert = UIAlertController(title: "Location Services not allowed",
-                                      message: "Go to Settings, Privacy and then Location Services in order to enable it.",
+        let alert = UIAlertController(title: "Location Access Not Allowed",
+                                      message:  """
+                                                This application requires location access in order
+                                                to record your track. In order to grant it go to Settings,
+                                                Privacy and then Location Services.
+                                                """,
                                       preferredStyle: UIAlertControllerStyle.alert)
         alert.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.default, handler: nil))
         self.present(alert, animated: true, completion: nil)
@@ -56,9 +60,8 @@ class PasseioTableViewController: UITableViewController, UISplitViewControllerDe
     
     private func configureLocationManager() {
         locationManager.delegate = self
-        let status = CLLocationManager.authorizationStatus()
         
-        switch status {
+        switch CLLocationManager.authorizationStatus() {
         case .notDetermined:
             self.locationManager.requestAlwaysAuthorization()
         case .restricted, .denied:

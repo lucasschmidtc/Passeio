@@ -21,11 +21,11 @@
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSLocationAlwaysUsageDescription</key>
-	<string>This is required for tracking while in usage and in the background.</string>
+	<string>Select &quot;Always Allow&quot; in order to allow the application to keep recording in the background. Otherwise, recording will be limited to while you are using the application.</string>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-	<string>This is required for tracking while in usage and in the background.</string>
+	<string>Select &quot;Always Allow&quot; in order to allow the application to keep recording in the background. Otherwise, recording will be limited to while you are using the application.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>By limiting to &quot;when in usage&quot; the application won&apos;t be able to track while in the background, consider allowing to &quot;always on&quot;.</string>
+	<string>Select &quot;Always Allow&quot; in order to allow the application to keep recording in the background. Otherwise, recording will be limited to while you are using the application.</string>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>location</string>
