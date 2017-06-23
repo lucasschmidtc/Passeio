@@ -35,9 +35,9 @@ class PasseioTableViewController: UITableViewController, UISplitViewControllerDe
     
     // MARK: - Request for Location Services
     
-    private var recordingsAllowed: Bool? {
+    private var recordingIsAllowed: Bool? {
         didSet {
-            if recordingsAllowed == false {
+            if recordingIsAllowed == false {
                 self.navigationItem.rightBarButtonItem?.isEnabled = false
             }
             else {
@@ -60,24 +60,28 @@ class PasseioTableViewController: UITableViewController, UISplitViewControllerDe
     
     private func configureLocationManager() {
         locationManager.delegate = self
+        locationManager.desiredAccuracy = kCLLocationAccuracyBest
+        locationManager.distanceFilter = 100
+        locationManager.allowsBackgroundLocationUpdates = false
         
         switch CLLocationManager.authorizationStatus() {
         case .notDetermined:
             self.locationManager.requestAlwaysAuthorization()
         case .restricted, .denied:
-            recordingsAllowed = false
+            recordingIsAllowed = false
             alertRecordingIsNotAllowed()
         case .authorizedAlways, .authorizedWhenInUse:
-            recordingsAllowed = true
+            recordingIsAllowed = true
         }
     }
     
     func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
         switch status {
         case .authorizedAlways, .authorizedWhenInUse:
-            recordingsAllowed = true
+            recordingIsAllowed = true
         default:
-            recordingsAllowed = false
+            stopRecording()
+            recordingIsAllowed = false
         }
     }
     
@@ -86,19 +90,39 @@ class PasseioTableViewController: UITableViewController, UISplitViewControllerDe
     private var currentlyRecording = false
     @IBAction func record(_ sender: UIBarButtonItem) {
         configureLocationManager()
-        if recordingsAllowed != nil, recordingsAllowed! == true {
+        if recordingIsAllowed != nil, recordingIsAllowed! == true {
             if currentlyRecording {
                 self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add,
                                                                          target: self,
                                                                          action: #selector(self.record(_:)))
-                currentlyRecording = false
+                stopRecording()
             }
             else {
-                self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .stop,
+                self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .pause,
                                                                          target: self,
                                                                          action: #selector(self.record(_:)))
-                currentlyRecording = true
+                startRecording()
             }
+        }
+    }
+    
+    private var locations = [CLLocation]()
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        self.locations.append(contentsOf: locations)
+    }
+    
+    private func startRecording() {
+        locations.removeAll()
+        locationManager.startUpdatingLocation()
+        currentlyRecording = true
+    }
+    
+    private func stopRecording() {
+        if currentlyRecording {
+            locationManager.stopUpdatingLocation()
+            tracks.insert(Track(from: locations), at: 0)
+            tableView.insertRows(at: [NSIndexPath(row: 0, section: 0) as IndexPath], with: .top)
+            currentlyRecording = false
         }
     }
     
