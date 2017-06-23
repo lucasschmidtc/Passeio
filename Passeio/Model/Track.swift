@@ -12,29 +12,34 @@ import CoreLocation
 class Track {
     static private let dateFormatter: DateFormatter = {
         let formatter = DateFormatter()
+        formatter.timeStyle = .short
         formatter.dateStyle = .short
         return formatter
     }()
     
-    // TODO: make it private if possible
     var segments = [[Waypoint]]()
     private lazy var geocoder = CLGeocoder()
     private var placemark: CLPlacemark?
     
-    private var firstLocation: CLLocation? {
+    init(from locations: [CLLocation]) {
+        addSegment(from: locations)
+        setPlacemark()
+    }
+    
+    private var firstWaypoint: Waypoint? {
         get {
-            return segments.first?.first?.original
+            return segments.first?.first
         }
     }
     
     private var timestamp: Date? {
-        return firstLocation?.timestamp
+        return firstWaypoint?.timestamp
     }
     
     private func setPlacemark() {
         if placemark == nil, count > 0 {
             DispatchQueue.global(qos: .userInitiated).async { [weak self] in
-                if let location = self?.firstLocation {
+                if let location = self?.firstWaypoint?.original {
                     self?.geocoder.reverseGeocodeLocation(location) { [weak self] (placemarks, error) in
                         if error == nil {
                             DispatchQueue.main.async { [weak self] in
@@ -44,6 +49,17 @@ class Track {
                     }
                 }
             }
+        }
+    }
+    
+    func addSegment(from locations: [CLLocation]) {
+        if locations.count > 0 {
+            var waypoints = [Waypoint]()
+            for location in locations {
+                waypoints.append(Waypoint(from: location))
+            }
+            waypoints.sort { return $0.timestamp < $1.timestamp }
+            segments.append(waypoints)
         }
     }
     
@@ -66,7 +82,7 @@ class Track {
             let location = [placemark?.name, placemark?.subLocality, placemark?.locality,
                             placemark?.subAdministrativeArea, placemark?.administrativeArea,
                             placemark?.country, placemark?.inlandWater, placemark?.ocean,
-                            firstLocation?.latlon, "Location not yet defined"].flatMap {$0}.first!
+                            firstWaypoint?.original.latlon, "Location not yet defined"].flatMap {$0}.first!
             
             return location
         }
@@ -83,7 +99,7 @@ class Track {
             }
             
             if timestamp != nil {
-                sub = " since " + Track.dateFormatter.string(from: timestamp!)
+                sub = sub + " since " + Track.dateFormatter.string(from: timestamp!)
             }
             
             return sub
