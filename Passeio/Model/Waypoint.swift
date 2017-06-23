@@ -22,7 +22,7 @@ class Waypoint: NSObject, MKAnnotation  {
         return formatter
     }()
     
-    init(with location: CLLocation) {
+    init(from location: CLLocation) {
         self.location = location
         self.position = location.coordinate
         self.time = location.timestamp
