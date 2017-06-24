@@ -136,6 +136,11 @@ class PasseioTableViewController: UITableViewController, UISplitViewControllerDe
     
     // MARK: - Table view data source
 
+    @IBAction func refreshTable(_ sender: UIRefreshControl) {
+        tableView.reloadData()
+        sender.endRefreshing()
+    }
+    
     override func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
