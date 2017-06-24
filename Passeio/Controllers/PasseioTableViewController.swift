@@ -92,15 +92,9 @@ class PasseioTableViewController: UITableViewController, UISplitViewControllerDe
         configureLocationManager()
         if recordingIsAllowed != nil, recordingIsAllowed! == true {
             if currentlyRecording {
-                self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add,
-                                                                         target: self,
-                                                                         action: #selector(self.record(_:)))
                 stopRecording()
             }
             else {
-                self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .pause,
-                                                                         target: self,
-                                                                         action: #selector(self.record(_:)))
                 startRecording()
             }
         }
@@ -111,14 +105,28 @@ class PasseioTableViewController: UITableViewController, UISplitViewControllerDe
         self.locations.append(contentsOf: locations)
     }
     
+    /*
+    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
+        if (error as NSError).code == CLError.denied.rawValue {
+            stopRecording()
+        }
+    }
+     */
+    
     private func startRecording() {
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .pause,
+                                                                 target: self,
+                                                                 action: #selector(self.record(_:)))
+        currentlyRecording = true
         locations.removeAll()
         locationManager.startUpdatingLocation()
-        currentlyRecording = true
     }
     
     private func stopRecording() {
         if currentlyRecording {
+            self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add,
+                                                                     target: self,
+                                                                     action: #selector(self.record(_:)))
             locationManager.stopUpdatingLocation()
             tracks.insert(Track(from: locations), at: 0)
             tableView.insertRows(at: [NSIndexPath(row: 0, section: 0) as IndexPath], with: .top)
