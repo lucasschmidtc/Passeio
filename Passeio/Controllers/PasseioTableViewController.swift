@@ -105,13 +105,11 @@ class PasseioTableViewController: UITableViewController, UISplitViewControllerDe
         self.locations.append(contentsOf: locations)
     }
     
-    /*
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
         if (error as NSError).code == CLError.denied.rawValue {
             stopRecording()
         }
     }
-     */
     
     private func startRecording() {
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .pause,
@@ -205,7 +203,7 @@ class PasseioTableViewController: UITableViewController, UISplitViewControllerDe
         }
     }
     
-    // MARK: - UISplitViewController
+    // MARK: - UISplitViewControllerDelegate
     
     func splitViewController(_ splitViewController: UISplitViewController,
                              collapseSecondary secondaryViewController: UIViewController,
