@@ -214,11 +214,11 @@ class PasseioTableViewController: UITableViewController, UISplitViewControllerDe
         if primaryViewController.contents == self {
             if let mapViewController = secondaryViewController.contents as? MapViewController {
                 if mapViewController.track == nil {
-                    return false
+                    return true
                 }
             }
         }
         
-        return true
+        return false
     }
 }

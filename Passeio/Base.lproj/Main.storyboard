@@ -15,7 +15,7 @@
                 <splitViewController id="RSj-lY-2Lr" sceneMemberID="viewController">
                     <connections>
                         <segue destination="oCw-Ko-svS" kind="relationship" relationship="masterViewController" id="Je8-jC-hAF"/>
-                        <segue destination="gMT-yU-WnL" kind="relationship" relationship="detailViewController" id="Waf-1k-lhb"/>
+                        <segue destination="Zwy-8O-wfP" kind="relationship" relationship="detailViewController" id="Waf-1k-lhb"/>
                     </connections>
                 </splitViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="JqW-j8-S3S" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -55,7 +55,7 @@
                                     </subviews>
                                 </tableViewCellContentView>
                                 <connections>
-                                    <segue destination="gMT-yU-WnL" kind="showDetail" identifier="Map Editor" id="R2U-qK-Pdy"/>
+                                    <segue destination="Zwy-8O-wfP" kind="showDetail" identifier="Map Editor" id="R2U-qK-Pdy"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>
@@ -72,6 +72,7 @@
                         </barButtonItem>
                     </navigationItem>
                     <refreshControl key="refreshControl" opaque="NO" multipleTouchEnabled="YES" contentMode="center" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" id="ggc-fk-Axg">
+                        <rect key="frame" x="0.0" y="0.0" width="1000" height="1000"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <connections>
                             <action selector="refreshTable:" destination="Rrd-tF-F5I" eventType="valueChanged" id="dhR-Py-TD6"/>
@@ -111,7 +112,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="UAu-72-rQS" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-172" y="-243"/>
+            <point key="canvasLocation" x="702" y="-244"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="27F-bW-24V">
@@ -131,8 +132,26 @@
             </objects>
             <point key="canvasLocation" x="-171.19999999999999" y="-1012.8935532233884"/>
         </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="dnw-VH-wyF">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="Zwy-8O-wfP" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="a3T-lV-Htc">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="gMT-yU-WnL" kind="relationship" relationship="rootViewController" id="i3Z-C1-ZxI"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="gQe-st-PR0" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-172.80000000000001" y="-243.77811094452775"/>
+        </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="R2U-qK-Pdy"/>
+        <segue reference="Waf-1k-lhb"/>
     </inferredMetricsTieBreakers>
 </document>

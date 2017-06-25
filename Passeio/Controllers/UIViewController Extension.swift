@@ -10,8 +10,10 @@ import UIKit
 
 extension UIViewController {
     var contents: UIViewController {
-        if let visibleController = self.navigationController?.visibleViewController {
-            return visibleController
+        if let navigationController = self as? UINavigationController {
+            if let visibleController = navigationController.visibleViewController {
+                return visibleController
+            }
         }
         return self
     }
