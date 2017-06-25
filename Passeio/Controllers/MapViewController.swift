@@ -19,8 +19,21 @@ class MapViewController: UIViewController, MKMapViewDelegate {
             
             if track != nil {
                 for segment in track.segments {
+                    // annotations pins
                     mapView.addAnnotations(segment)
                     mapView.showAnnotations(segment, animated: true)
+                    
+                    // a dashed line to show the recorded track
+                    let dashedPolyline = MKPolyline(coordinates: segment.map {return $0.original.coordinate},
+                                                    count: segment.count)
+                    dashedPolyline.title = Constants.dashedLineTitle
+                    mapView.add(dashedPolyline)
+                    
+                    // a full line to show the modified track after dragging the pins around
+                    let polyline = MKPolyline(coordinates: segment.map {return $0.coordinate},
+                                              count: segment.count)
+                    polyline.title = Constants.fullLineTitle
+                    mapView.add(polyline)
                 }
             }
         }
@@ -28,9 +41,25 @@ class MapViewController: UIViewController, MKMapViewDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
     }
+    
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+    }
+    
+    // MARK: - Constants
+    
+    private struct Constants {
+        static let fullLineTitle: String = "Modified Track"
+        static let fullLineWidth: CGFloat = 4.0
+        static let fullLineColor: UIColor = UIColor.red
+        static let dashedLineTitle: String = "Recorded Track"
+        static let dashedLineWidth: CGFloat = 3.0
+        static let dashedLineColor: UIColor = UIColor.black
+        static let dashedLinePattern: [NSNumber] = [4, 8]
+    }
+    
+    // MARK: - MKMapViewDelegate
     
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
         var view: MKAnnotationView! = mapView.dequeueReusableAnnotationView(withIdentifier: "Waypoint")
@@ -42,23 +71,59 @@ class MapViewController: UIViewController, MKMapViewDelegate {
         view.rightCalloutAccessoryView = nil
         view.leftCalloutAccessoryView = nil
         view.canShowCallout = true
+        view.isDraggable = true
         
         return view
     }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+    
+    func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
+        let line = MKPolylineRenderer(overlay: overlay)
+        if let title = overlay.title {
+            if title == Constants.dashedLineTitle {
+                line.lineWidth = Constants.dashedLineWidth
+                line.strokeColor = Constants.dashedLineColor
+                line.lineDashPattern = Constants.dashedLinePattern
+            }
+            else if title == Constants.fullLineTitle {
+                line.lineWidth = Constants.fullLineWidth
+                line.strokeColor = Constants.fullLineColor
+            }
+        }
+        return line
     }
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
+    
+    // whenever a pin is dragged the polyline that represents the current track is redraw
+    func mapView(_ mapView: MKMapView,
+                 annotationView view: MKAnnotationView,
+                 didChange newState: MKAnnotationViewDragState,
+                 fromOldState oldState: MKAnnotationViewDragState) {
+        
+        switch newState {
+        case .ending:
+            updateModifiedTrack()
+        default:
+            break
+        }
     }
-    */
-
+    
+    private func updateModifiedTrack() {
+        // removes the old polyline
+        if let index = (mapView.overlays).index(where: {
+            if let title = $0.title {
+                return title == Constants.fullLineTitle
+            }
+            return false
+        }) {
+            mapView.remove(mapView.overlays[index])
+        }
+        
+        if track != nil {
+            for segment in track.segments {
+                let polyline = MKPolyline(coordinates: segment.map {return $0.coordinate},
+                                          count: segment.count)
+                polyline.title = Constants.fullLineTitle
+                mapView.add(polyline)
+            }
+        }
+    }
 }
