@@ -9,7 +9,7 @@
 import Foundation
 import CoreLocation
 
-class Track {
+class Track: NSObject, NSCoding {
     static private let dateFormatter: DateFormatter = {
         let formatter = DateFormatter()
         formatter.timeStyle = .short
@@ -22,9 +22,55 @@ class Track {
     private var placemark: CLPlacemark?
     
     init(from locations: [CLLocation]) {
+        super.init()
         addSegment(from: locations)
         setPlacemark()
     }
+    
+    init(from segments: [[Waypoint]]) {
+        super.init()
+        self.segments = segments
+        setPlacemark()
+    }
+    
+    init(from segments: [[Waypoint]], and placemark: CLPlacemark?) {
+        super.init()
+        self.segments = segments
+        self.placemark = placemark
+        if self.placemark == nil {
+            setPlacemark()
+        }
+    }
+    
+    // MARK: - Constants
+    
+    private struct Constants {
+        static let placemarkKey: String = "placemark"
+        static let segmentsKey: String = "segments"
+    }
+    
+    // MARK: - NSCoding Protocol (Persistence)
+    
+    func encode(with aCoder: NSCoder) {
+        aCoder.encode(placemark, forKey: Constants.placemarkKey)
+        aCoder.encode(segments, forKey: Constants.segmentsKey)
+    }
+    
+    required convenience init?(coder aDecoder: NSCoder) {
+        if let storedSegments = aDecoder.decodeObject(forKey: Constants.segmentsKey) as? [[Waypoint]] {
+            if let storedPlacemark = aDecoder.decodeObject(forKey: Constants.placemarkKey) as? CLPlacemark? {
+                self.init(from: storedSegments, and: storedPlacemark)
+            }
+            else {
+                self.init(from: storedSegments)
+            }
+        }
+        else {
+            return nil
+        }
+    }
+    
+    // MARK: - Handling of the data
     
     private var firstWaypoint: Waypoint? {
         get {

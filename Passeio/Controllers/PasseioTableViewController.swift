@@ -11,12 +11,13 @@ import CoreLocation
 
 class PasseioTableViewController: UITableViewController, UISplitViewControllerDelegate, CLLocationManagerDelegate {
     private var tracks = [Track]()
-    private var locationManager = CLLocationManager()
     
     override func awakeFromNib() {
         super.awakeFromNib()
         self.splitViewController?.delegate = self
         self.splitViewController?.preferredDisplayMode = .allVisible
+        
+        loadTracks()
     }
     
     override func viewDidLoad() {
@@ -33,8 +34,32 @@ class PasseioTableViewController: UITableViewController, UISplitViewControllerDe
         super.didReceiveMemoryWarning()
     }
     
+    // MARK: - Constants
+    
+    static let documentsDirectory = FileManager().urls(for: .documentDirectory, in: .userDomainMask).first!
+    static let archiveURL = documentsDirectory.appendingPathComponent("tracks")
+    
+    private struct Constants {
+        static let summaryCellIdentifier: String = "Track Summary Cell"
+        static let mapEditorSegueIdentfier: String = "Map Editor"
+    }
+    
+    // MARK: - Persistence with NSCoding
+    
+    private func saveTracks() {
+        NSKeyedArchiver.archiveRootObject(tracks, toFile: PasseioTableViewController.archiveURL.path)
+    }
+    
+    private func loadTracks() {
+        let stored = NSKeyedUnarchiver.unarchiveObject(withFile: PasseioTableViewController.archiveURL.path)
+        if (stored as? [Track]) != nil {
+            tracks = (stored as! [Track])
+        }
+    }
+    
     // MARK: - Request for Location Services
     
+    private var locationManager = CLLocationManager()
     private var recordingIsAllowed: Bool? {
         didSet {
             if recordingIsAllowed == false {
@@ -44,18 +69,6 @@ class PasseioTableViewController: UITableViewController, UISplitViewControllerDe
                 self.navigationItem.rightBarButtonItem?.isEnabled = true
             }
         }
-    }
-    
-    private func alertRecordingIsNotAllowed() {
-        let alert = UIAlertController(title: "Location Access Not Allowed",
-                                      message:  """
-                                                This application requires location access in order
-                                                to record your track. In order to grant it go to Settings,
-                                                Privacy and then Location Services.
-                                                """,
-                                      preferredStyle: UIAlertControllerStyle.alert)
-        alert.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.default, handler: nil))
-        self.present(alert, animated: true, completion: nil)
     }
     
     private func configureLocationManager() {
@@ -83,6 +96,18 @@ class PasseioTableViewController: UITableViewController, UISplitViewControllerDe
             stopRecording()
             recordingIsAllowed = false
         }
+    }
+    
+    private func alertRecordingIsNotAllowed() {
+        let alert = UIAlertController(title: "Location Access Not Allowed",
+                                      message:  """
+                                                This application requires location access in order
+                                                to record your track. In order to grant it go to Settings,
+                                                Privacy and then Location Services.
+                                                """,
+                                      preferredStyle: UIAlertControllerStyle.alert)
+        alert.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.default, handler: nil))
+        self.present(alert, animated: true, completion: nil)
     }
     
     // MARK: - Initiate a Recording
@@ -129,6 +154,7 @@ class PasseioTableViewController: UITableViewController, UISplitViewControllerDe
             tracks.insert(Track(from: locations), at: 0)
             tableView.insertRows(at: [NSIndexPath(row: 0, section: 0) as IndexPath], with: .top)
             currentlyRecording = false
+            saveTracks()
         }
     }
     
@@ -148,7 +174,7 @@ class PasseioTableViewController: UITableViewController, UISplitViewControllerDe
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "Track Summary Cell", for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: Constants.summaryCellIdentifier, for: indexPath)
         cell.textLabel?.text = tracks[indexPath.row].title
         cell.detailTextLabel?.text = tracks[indexPath.row].subtitle
 
@@ -194,7 +220,7 @@ class PasseioTableViewController: UITableViewController, UISplitViewControllerDe
     // MARK: - Navigation
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == "Map Editor" {
+        if segue.identifier == Constants.mapEditorSegueIdentfier {
             if let controller = segue.destination.contents as? MapViewController {
                 if let selectedIndex = tableView.indexPathForSelectedRow {
                     controller.track = tracks[selectedIndex.row]
