@@ -52,8 +52,8 @@ class PasseioTableViewController: UITableViewController, UISplitViewControllerDe
     
     private func loadTracks() {
         let stored = NSKeyedUnarchiver.unarchiveObject(withFile: PasseioTableViewController.archiveURL.path)
-        if (stored as? [Track]) != nil {
-            tracks = (stored as! [Track])
+        if let stored = stored as? [Track] {
+            tracks += stored
         }
     }
     
@@ -126,8 +126,11 @@ class PasseioTableViewController: UITableViewController, UISplitViewControllerDe
     }
     
     private var locations = [CLLocation]()
+    private var startedRecordingTimestamp: Date?
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        self.locations.append(contentsOf: locations)
+        if startedRecordingTimestamp != nil {
+            self.locations.append(contentsOf: locations.filter { return $0.timestamp >= startedRecordingTimestamp! })
+        }
     }
     
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
@@ -142,6 +145,7 @@ class PasseioTableViewController: UITableViewController, UISplitViewControllerDe
                                                                  action: #selector(self.record(_:)))
         currentlyRecording = true
         locations.removeAll()
+        startedRecordingTimestamp = Date(timeIntervalSinceNow: 0)
         locationManager.startUpdatingLocation()
     }
     
