@@ -22,6 +22,24 @@ class PasseioTableViewController: UITableViewController, UISplitViewControllerDe
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        // get notified when the app moves to the background
+        NotificationCenter.default.addObserver(forName: Notification.Name.UIApplicationWillResignActive,
+                                               object: nil, 
+                                               queue: OperationQueue.main,
+                                               using: { [weak self] notification in self?.willResign() })
+        
+        // get notified when an edit happens (drag a pin)
+        NotificationCenter.default.addObserver(forName: .onEdit,
+                                               object: nil,
+                                               queue: OperationQueue.main,
+                                               using: { [weak self] notification in self?.needsToSave = true })
+        
+        // get notified when a placemark is defined
+        NotificationCenter.default.addObserver(forName: .onPlacemarkSet,
+                                               object: nil,
+                                               queue: OperationQueue.main,
+                                               using: { [weak self] notification in self?.needsToSave = true })
 
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
@@ -32,6 +50,10 @@ class PasseioTableViewController: UITableViewController, UISplitViewControllerDe
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
     }
     
     // MARK: - Constants
@@ -46,8 +68,16 @@ class PasseioTableViewController: UITableViewController, UISplitViewControllerDe
     
     // MARK: - Persistence with NSCoding
     
+    private var needsToSave = false
+    private func willResign() {
+        if needsToSave {
+            saveTracks()
+        }
+    }
+    
     private func saveTracks() {
         NSKeyedArchiver.archiveRootObject(tracks, toFile: PasseioTableViewController.archiveURL.path)
+        needsToSave = false
     }
     
     private func loadTracks() {
@@ -158,6 +188,7 @@ class PasseioTableViewController: UITableViewController, UISplitViewControllerDe
             tracks.insert(Track(from: locations), at: 0)
             tableView.insertRows(at: [NSIndexPath(row: 0, section: 0) as IndexPath], with: .top)
             currentlyRecording = false
+            startedRecordingTimestamp = nil
             saveTracks()
         }
     }

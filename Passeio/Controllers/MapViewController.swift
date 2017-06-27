@@ -107,6 +107,9 @@ class MapViewController: UIViewController, MKMapViewDelegate {
     }
     
     private func updateModifiedTrack() {
+        // notifies an edit happened
+        NotificationCenter.default.post(name: .onEdit, object: nil)
+        
         // removes the old polyline
         if let index = (mapView.overlays).index(where: {
             if let title = $0.title {
