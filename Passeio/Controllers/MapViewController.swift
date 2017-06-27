@@ -24,15 +24,15 @@ class MapViewController: UIViewController, MKMapViewDelegate {
                     mapView.showAnnotations(segment, animated: true)
                     
                     // a dashed line to show the recorded track
-                    let dashedPolyline = MKPolyline(coordinates: segment.map {return $0.original.coordinate},
+                    let dashedPolyline = MKPolyline(coordinates: segment.map { return $0.original.coordinate },
                                                     count: segment.count)
-                    dashedPolyline.title = Constants.dashedLineTitle
+                    dashedPolyline.title = Constants.DashedLine.title
                     mapView.add(dashedPolyline)
                     
                     // a full line to show the modified track after dragging the pins around
-                    let polyline = MKPolyline(coordinates: segment.map {return $0.coordinate},
+                    let polyline = MKPolyline(coordinates: segment.map { return $0.coordinate },
                                               count: segment.count)
-                    polyline.title = Constants.fullLineTitle
+                    polyline.title = Constants.FullLine.title
                     mapView.add(polyline)
                 }
             }
@@ -50,13 +50,17 @@ class MapViewController: UIViewController, MKMapViewDelegate {
     // MARK: - Constants
     
     private struct Constants {
-        static let fullLineTitle: String = "Modified Track"
-        static let fullLineWidth: CGFloat = 4.0
-        static let fullLineColor: UIColor = UIColor.red
-        static let dashedLineTitle: String = "Recorded Track"
-        static let dashedLineWidth: CGFloat = 3.0
-        static let dashedLineColor: UIColor = UIColor.black
-        static let dashedLinePattern: [NSNumber] = [4, 8]
+        struct FullLine {
+            static let title: String = "Modified Track"
+            static let lineWidth: CGFloat = 4.0
+            static let color: UIColor = UIColor.red
+        }
+        struct DashedLine {
+            static let title: String = "Recorded Track"
+            static let lineWidth: CGFloat = 3.0
+            static let color: UIColor = UIColor.black
+            static let pattern: [NSNumber] = [4, 8]
+        }
     }
     
     // MARK: - MKMapViewDelegate
@@ -79,14 +83,14 @@ class MapViewController: UIViewController, MKMapViewDelegate {
     func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
         let line = MKPolylineRenderer(overlay: overlay)
         if let title = overlay.title {
-            if title == Constants.dashedLineTitle {
-                line.lineWidth = Constants.dashedLineWidth
-                line.strokeColor = Constants.dashedLineColor
-                line.lineDashPattern = Constants.dashedLinePattern
+            if title == Constants.DashedLine.title {
+                line.lineWidth = Constants.DashedLine.lineWidth
+                line.strokeColor = Constants.DashedLine.color
+                line.lineDashPattern = Constants.DashedLine.pattern
             }
-            else if title == Constants.fullLineTitle {
-                line.lineWidth = Constants.fullLineWidth
-                line.strokeColor = Constants.fullLineColor
+            else if title == Constants.FullLine.title {
+                line.lineWidth = Constants.FullLine.lineWidth
+                line.strokeColor = Constants.FullLine.color
             }
         }
         return line
@@ -113,7 +117,7 @@ class MapViewController: UIViewController, MKMapViewDelegate {
         // removes the old polyline
         if let index = (mapView.overlays).index(where: {
             if let title = $0.title {
-                return title == Constants.fullLineTitle
+                return title == Constants.FullLine.title
             }
             return false
         }) {
@@ -122,9 +126,9 @@ class MapViewController: UIViewController, MKMapViewDelegate {
         
         if track != nil {
             for segment in track.segments {
-                let polyline = MKPolyline(coordinates: segment.map {return $0.coordinate},
+                let polyline = MKPolyline(coordinates: segment.map { return $0.coordinate },
                                           count: segment.count)
-                polyline.title = Constants.fullLineTitle
+                polyline.title = Constants.FullLine.title
                 mapView.add(polyline)
             }
         }

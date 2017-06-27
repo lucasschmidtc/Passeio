@@ -34,31 +34,33 @@ class Waypoint: NSObject, MKAnnotation, NSCoding  {
     // MARK: - Constants
     
     private struct Constants {
-        static let locationKey: String = "location"
-        static let longitudeKey: String = "longitude"
-        static let latitudeKey: String = "latitude"
-        static let timeKey: String = "time"
+        struct CoderKey {
+            static let location: String = "location"
+            static let longitude: String = "longitude"
+            static let latitude: String = "latitude"
+            static let time: String = "time"
+        }
     }
     
     // MARK: - NSCoding Protocol (Persistence)
     
     func encode(with aCoder: NSCoder) {
-        aCoder.encode(location, forKey: Constants.locationKey)
-        aCoder.encode(latitude, forKey: Constants.latitudeKey)
-        aCoder.encode(longitude, forKey: Constants.longitudeKey)
-        aCoder.encode((time as NSDate), forKey: Constants.timeKey)
+        aCoder.encode(location, forKey: Constants.CoderKey.location)
+        aCoder.encode(latitude, forKey: Constants.CoderKey.latitude)
+        aCoder.encode(longitude, forKey: Constants.CoderKey.longitude)
+        aCoder.encode((time as NSDate), forKey: Constants.CoderKey.time)
     }
     
     required convenience init?(coder aDecoder: NSCoder) {
-        if let storedLocation = aDecoder.decodeObject(forKey: Constants.locationKey) as? CLLocation {
+        if let storedLocation = aDecoder.decodeObject(forKey: Constants.CoderKey.location) as? CLLocation {
             self.init(from: storedLocation)
-            if aDecoder.containsValue(forKey: Constants.latitudeKey),
-                aDecoder.containsValue(forKey: Constants.longitudeKey) {
-                self.latitude = aDecoder.decodeDouble(forKey: Constants.latitudeKey)
-                self.longitude = aDecoder.decodeDouble(forKey: Constants.longitudeKey)
+            if aDecoder.containsValue(forKey: Constants.CoderKey.latitude),
+                aDecoder.containsValue(forKey: Constants.CoderKey.longitude) {
+                self.latitude = aDecoder.decodeDouble(forKey: Constants.CoderKey.latitude)
+                self.longitude = aDecoder.decodeDouble(forKey: Constants.CoderKey.longitude)
             }
             
-            if let storedTime = aDecoder.decodeObject(forKey: Constants.timeKey) as? NSDate {
+            if let storedTime = aDecoder.decodeObject(forKey: Constants.CoderKey.time) as? NSDate {
                 self.time = (storedTime as Date)
             }
         } else {

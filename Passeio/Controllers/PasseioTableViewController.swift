@@ -58,13 +58,23 @@ class PasseioTableViewController: UITableViewController, UISplitViewControllerDe
     
     // MARK: - Constants
     
-    static let documentsDirectory = FileManager().urls(for: .documentDirectory, in: .userDomainMask).first!
-    static let archiveURL = documentsDirectory.appendingPathComponent("tracks")
-    
     private struct Constants {
-        static let summaryCellIdentifier: String = "Track Summary Cell"
-        static let mapEditorSegueIdentfier: String = "Map Editor"
+        struct Cell {
+            struct Identifier {
+                static let summary: String = "Track Summary Cell"
+                static let preview: String = "Map Preview Cell"
+            }
+        }
+        struct Segue {
+            static let mapEditor: String = "Map Editor"
+        }
+        static let tracksFileName: String = "tracks"
     }
+    
+    private let tracksURL: URL = {
+        let documentsDirectory = FileManager().urls(for: .documentDirectory, in: .userDomainMask).first!
+        return documentsDirectory.appendingPathComponent(Constants.tracksFileName)
+    }()
     
     // MARK: - Persistence with NSCoding
     
@@ -76,12 +86,12 @@ class PasseioTableViewController: UITableViewController, UISplitViewControllerDe
     }
     
     private func saveTracks() {
-        NSKeyedArchiver.archiveRootObject(tracks, toFile: PasseioTableViewController.archiveURL.path)
+        NSKeyedArchiver.archiveRootObject(tracks, toFile: tracksURL.path)
         needsToSave = false
     }
     
     private func loadTracks() {
-        let stored = NSKeyedUnarchiver.unarchiveObject(withFile: PasseioTableViewController.archiveURL.path)
+        let stored = NSKeyedUnarchiver.unarchiveObject(withFile: tracksURL.path)
         if let stored = stored as? [Track] {
             tracks += stored
         }
@@ -209,7 +219,7 @@ class PasseioTableViewController: UITableViewController, UISplitViewControllerDe
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: Constants.summaryCellIdentifier, for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: Constants.Cell.Identifier.summary, for: indexPath)
         cell.textLabel?.text = tracks[indexPath.row].title
         cell.detailTextLabel?.text = tracks[indexPath.row].subtitle
 
@@ -255,7 +265,7 @@ class PasseioTableViewController: UITableViewController, UISplitViewControllerDe
     // MARK: - Navigation
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == Constants.mapEditorSegueIdentfier {
+        if segue.identifier == Constants.Segue.mapEditor {
             if let controller = segue.destination.contents as? MapViewController {
                 if let selectedIndex = tableView.indexPathForSelectedRow {
                     controller.track = tracks[selectedIndex.row]

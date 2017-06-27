@@ -45,20 +45,22 @@ class Track: NSObject, NSCoding {
     // MARK: - Constants
     
     private struct Constants {
-        static let placemarkKey: String = "placemark"
-        static let segmentsKey: String = "segments"
+        struct CoderKey {
+            static let placemark: String = "placemark"
+            static let segments: String = "segments"
+        }
     }
     
     // MARK: - NSCoding Protocol (Persistence)
     
     func encode(with aCoder: NSCoder) {
-        aCoder.encode(placemark, forKey: Constants.placemarkKey)
-        aCoder.encode(segments, forKey: Constants.segmentsKey)
+        aCoder.encode(placemark, forKey: Constants.CoderKey.placemark)
+        aCoder.encode(segments, forKey: Constants.CoderKey.segments)
     }
     
     required convenience init?(coder aDecoder: NSCoder) {
-        if let storedSegments = aDecoder.decodeObject(forKey: Constants.segmentsKey) as? [[Waypoint]] {
-            if let storedPlacemark = aDecoder.decodeObject(forKey: Constants.placemarkKey) as? CLPlacemark? {
+        if let storedSegments = aDecoder.decodeObject(forKey: Constants.CoderKey.segments) as? [[Waypoint]] {
+            if let storedPlacemark = aDecoder.decodeObject(forKey: Constants.CoderKey.placemark) as? CLPlacemark? {
                 self.init(from: storedSegments, and: storedPlacemark)
             }
             else {
