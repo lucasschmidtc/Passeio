@@ -106,13 +106,14 @@ class PasseioTableViewController: UITableViewController, UISplitViewControllerDe
     // MARK: - Request for Location Services
     
     private var locationManager = CLLocationManager()
-    private var recordingIsAllowed: Bool? {
+    private var recordingIsAllowed = false {
         didSet {
-            if recordingIsAllowed == false {
-                self.navigationItem.rightBarButtonItem?.isEnabled = false
+            if recordingIsAllowed {
+                self.navigationItem.rightBarButtonItem?.isEnabled = true
             }
             else {
-                self.navigationItem.rightBarButtonItem?.isEnabled = true
+                stopRecording()
+                self.navigationItem.rightBarButtonItem?.isEnabled = false
             }
         }
     }
@@ -139,7 +140,6 @@ class PasseioTableViewController: UITableViewController, UISplitViewControllerDe
         case .authorizedAlways, .authorizedWhenInUse:
             recordingIsAllowed = true
         default:
-            stopRecording()
             recordingIsAllowed = false
         }
     }
@@ -161,7 +161,7 @@ class PasseioTableViewController: UITableViewController, UISplitViewControllerDe
     private var currentlyRecording = false
     @IBAction func record(_ sender: UIBarButtonItem) {
         configureLocationManager()
-        if recordingIsAllowed != nil, recordingIsAllowed! == true {
+        if recordingIsAllowed {
             if currentlyRecording {
                 stopRecording()
             }
@@ -247,18 +247,17 @@ class PasseioTableViewController: UITableViewController, UISplitViewControllerDe
         return true
     }
     */
-
-    /*
-    // Override to support editing the table view.
-    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+    
+    override func tableView(_ tableView: UITableView,
+                            commit editingStyle: UITableViewCellEditingStyle,
+                            forRowAt indexPath: IndexPath) {
+        
         if editingStyle == .delete {
-            // Delete the row from the data source
+            tracks.remove(at: indexPath.row)
             tableView.deleteRows(at: [indexPath], with: .fade)
-        } else if editingStyle == .insert {
-            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-        }    
+            saveTracks()
+        }
     }
-    */
 
     /*
     // Override to support rearranging the table view.
