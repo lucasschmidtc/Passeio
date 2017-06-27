@@ -92,7 +92,7 @@ class Track: NSObject, NSCoding {
                         if error == nil {
                             DispatchQueue.main.async { [weak self] in
                                 self?.placemark = placemarks?.first
-                                NotificationCenter.default.post(name: .onPlacemarkSet, object: nil)
+                                NotificationCenter.default.post(name: .onPlacemarkSet, object: self)
                             }
                         }
                     }

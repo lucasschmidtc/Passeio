@@ -24,7 +24,7 @@ class PasseioTableViewController: UITableViewController, UISplitViewControllerDe
         super.viewDidLoad()
         
         // get notified when the app moves to the background
-        NotificationCenter.default.addObserver(forName: Notification.Name.UIApplicationWillResignActive,
+        NotificationCenter.default.addObserver(forName: .UIApplicationWillResignActive,
                                                object: nil, 
                                                queue: OperationQueue.main,
                                                using: { [weak self] notification in self?.willResign() })
@@ -39,7 +39,13 @@ class PasseioTableViewController: UITableViewController, UISplitViewControllerDe
         NotificationCenter.default.addObserver(forName: .onPlacemarkSet,
                                                object: nil,
                                                queue: OperationQueue.main,
-                                               using: { [weak self] notification in self?.needsToSave = true })
+                                               using: { [weak self] notification in
+                                                if let object = notification.object {
+                                                    if let track = object as? Track {
+                                                        self?.updateRow(of: track)
+                                                    }
+                                                }
+                                                self?.needsToSave = true })
 
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
@@ -208,6 +214,13 @@ class PasseioTableViewController: UITableViewController, UISplitViewControllerDe
     @IBAction func refreshTable(_ sender: UIRefreshControl) {
         tableView.reloadData()
         sender.endRefreshing()
+    }
+    
+    private func updateRow(of track: Track) {
+        if let row = tracks.index(of: track) {
+            let indexPath = NSIndexPath(row: row, section: 0)
+            tableView.reloadRows(at: [indexPath as IndexPath], with: .none)
+        }
     }
     
     override func numberOfSections(in tableView: UITableView) -> Int {
