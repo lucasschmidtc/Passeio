@@ -56,6 +56,8 @@ class SettingsTableViewController: UITableViewController {
         if accuracies.index(of: UserDefaults.standard.double(forKey: Settings.Accuracy.Key)) == nil {
             UserDefaults.standard.set(Settings.Accuracy.Default, forKey: Settings.Accuracy.Key)
         }
+        
+        print("aqui")
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -63,7 +65,6 @@ class SettingsTableViewController: UITableViewController {
         
         checkCell(at: NSIndexPath(row: indexRate, section: Section.Rate.rawValue) as IndexPath)
         checkCell(at: NSIndexPath(row: indexAccuracy, section: Section.Accuracy.rawValue) as IndexPath)
-        
     }
 
     override func didReceiveMemoryWarning() {
@@ -72,7 +73,7 @@ class SettingsTableViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
         if indexPath.section <= 1 {
-            if indexPath.section == 0 {
+            if indexPath.section == Section.Rate.rawValue {
                 uncheckCell(at: NSIndexPath(row: indexRate, section: Section.Rate.rawValue) as IndexPath)
                 UserDefaults.standard.set(rates[indexPath.row], forKey: Settings.Rate.Key)
             }
@@ -90,6 +91,8 @@ class SettingsTableViewController: UITableViewController {
         if let cell = tableView.cellForRow(at: indexPath) {
             cell.accessoryType = .checkmark
             tableView.reloadRows(at: [indexPath], with: .none)
+            
+            NotificationCenter.default.post(name: .onSettingsChange, object: nil)
         }
     }
     

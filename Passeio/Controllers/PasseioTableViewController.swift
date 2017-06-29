@@ -17,25 +17,28 @@ class PasseioTableViewController: UITableViewController, UISplitViewControllerDe
         self.splitViewController?.delegate = self
         self.splitViewController?.preferredDisplayMode = .allVisible
         
+        UserDefaults.standard.register(defaults: [Settings.Rate.Key: Settings.Rate.Default,
+                                                  Settings.Accuracy.Key: Settings.Accuracy.Default])
+        
         loadTracks()
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        // get notified when the app moves to the background
+        // gets notified when the app moves to the background
         NotificationCenter.default.addObserver(forName: .UIApplicationWillResignActive,
                                                object: nil, 
                                                queue: OperationQueue.main,
                                                using: { [weak self] notification in self?.willResign() })
         
-        // get notified when an edit happens (drag a pin)
+        // gets notified when an edit happens (drag a pin)
         NotificationCenter.default.addObserver(forName: .onEdit,
                                                object: nil,
                                                queue: OperationQueue.main,
                                                using: { [weak self] notification in self?.needsToSave = true })
         
-        // get notified when a placemark is defined
+        // gets notified when a placemark is defined
         NotificationCenter.default.addObserver(forName: .onPlacemarkSet,
                                                object: nil,
                                                queue: OperationQueue.main,
@@ -46,6 +49,12 @@ class PasseioTableViewController: UITableViewController, UISplitViewControllerDe
                                                     }
                                                 }
                                                 self?.needsToSave = true })
+        
+        // gets notified when a placemark is defined
+        NotificationCenter.default.addObserver(forName: .onSettingsChange,
+                                               object: nil,
+                                               queue: OperationQueue.main,
+                                               using: { [weak self] notification in self?.configureLocationManager() })
 
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
@@ -106,6 +115,7 @@ class PasseioTableViewController: UITableViewController, UISplitViewControllerDe
     // MARK: - Request for Location Services
     
     private var locationManager = CLLocationManager()
+    
     private var recordingIsAllowed = false {
         didSet {
             if recordingIsAllowed {
@@ -118,12 +128,7 @@ class PasseioTableViewController: UITableViewController, UISplitViewControllerDe
         }
     }
     
-    private func configureLocationManager() {
-        locationManager.delegate = self
-        locationManager.desiredAccuracy = kCLLocationAccuracyBest
-        locationManager.distanceFilter = 100
-        locationManager.allowsBackgroundLocationUpdates = false
-        
+    private func requestAuthorization() {
         switch CLLocationManager.authorizationStatus() {
         case .notDetermined:
             self.locationManager.requestAlwaysAuthorization()
@@ -133,6 +138,13 @@ class PasseioTableViewController: UITableViewController, UISplitViewControllerDe
         case .authorizedAlways, .authorizedWhenInUse:
             recordingIsAllowed = true
         }
+    }
+    
+    private func configureLocationManager() {
+        locationManager.delegate = self
+        locationManager.desiredAccuracy = UserDefaults.standard.double(forKey: Settings.Accuracy.Key)
+        locationManager.distanceFilter = UserDefaults.standard.double(forKey: Settings.Rate.Key)
+        locationManager.allowsBackgroundLocationUpdates = false
     }
     
     func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
@@ -160,6 +172,7 @@ class PasseioTableViewController: UITableViewController, UISplitViewControllerDe
     
     private var currentlyRecording = false
     @IBAction func record(_ sender: UIBarButtonItem) {
+        requestAuthorization()
         configureLocationManager()
         if recordingIsAllowed {
             if currentlyRecording {
