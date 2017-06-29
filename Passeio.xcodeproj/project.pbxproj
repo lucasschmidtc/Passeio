@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		922AAA2C1F02109200C65E11 /* NotificationName Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 922AAA2B1F02109200C65E11 /* NotificationName Extension.swift */; };
+		922AAA2E1F03497700C65E11 /* SettingsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 922AAA2D1F03497700C65E11 /* SettingsTableViewController.swift */; };
 		929430FD1EF756000015CF3A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 929430FC1EF756000015CF3A /* AppDelegate.swift */; };
 		929431021EF756000015CF3A /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 929431001EF756000015CF3A /* Main.storyboard */; };
 		929431041EF756000015CF3A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 929431031EF756000015CF3A /* Assets.xcassets */; };
@@ -41,6 +42,7 @@
 
 /* Begin PBXFileReference section */
 		922AAA2B1F02109200C65E11 /* NotificationName Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NotificationName Extension.swift"; sourceTree = "<group>"; };
+		922AAA2D1F03497700C65E11 /* SettingsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsTableViewController.swift; sourceTree = "<group>"; };
 		929430F91EF756000015CF3A /* Passeio.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Passeio.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		929430FC1EF756000015CF3A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		929431011EF756000015CF3A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -163,6 +165,7 @@
 				9294312D1EF75F590015CF3A /* MapViewController.swift */,
 				929431381EFB65BA0015CF3A /* UIViewController Extension.swift */,
 				922AAA2B1F02109200C65E11 /* NotificationName Extension.swift */,
+				922AAA2D1F03497700C65E11 /* SettingsTableViewController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -311,6 +314,7 @@
 				929431391EFB65BA0015CF3A /* UIViewController Extension.swift in Sources */,
 				9294312E1EF75F590015CF3A /* MapViewController.swift in Sources */,
 				929430FD1EF756000015CF3A /* AppDelegate.swift in Sources */,
+				922AAA2E1F03497700C65E11 /* SettingsTableViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
