@@ -88,6 +88,32 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		926026021F05ACE5006133E7 /* Settings */ = {
+			isa = PBXGroup;
+			children = (
+				922AAA2D1F03497700C65E11 /* SettingsTableViewController.swift */,
+			);
+			path = Settings;
+			sourceTree = "<group>";
+		};
+		926026031F05AD1D006133E7 /* Map Editor */ = {
+			isa = PBXGroup;
+			children = (
+				9294312D1EF75F590015CF3A /* MapViewController.swift */,
+			);
+			path = "Map Editor";
+			sourceTree = "<group>";
+		};
+		926026041F05AD39006133E7 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				929431351EF8DFE00015CF3A /* CLLocation Extension.swift */,
+				922AAA2B1F02109200C65E11 /* NotificationName Extension.swift */,
+				929431381EFB65BA0015CF3A /* UIViewController Extension.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
 		929430F01EF756000015CF3A = {
 			isa = PBXGroup;
 			children = (
@@ -111,11 +137,14 @@
 		929430FB1EF756000015CF3A /* Passeio */ = {
 			isa = PBXGroup;
 			children = (
+				926026041F05AD39006133E7 /* Extensions */,
 				929431301EF885A60015CF3A /* Model */,
 				9294312C1EF75E5B0015CF3A /* Supporting Files */,
 				929431081EF756000015CF3A /* Info.plist */,
 				929431001EF756000015CF3A /* Main.storyboard */,
-				929431371EFB656B0015CF3A /* Controllers */,
+				929431371EFB656B0015CF3A /* Main Table */,
+				926026031F05AD1D006133E7 /* Map Editor */,
+				926026021F05ACE5006133E7 /* Settings */,
 			);
 			path = Passeio;
 			sourceTree = "<group>";
@@ -153,21 +182,16 @@
 			children = (
 				929431311EF885BC0015CF3A /* Waypoint.swift */,
 				929431331EF885C50015CF3A /* Track.swift */,
-				929431351EF8DFE00015CF3A /* CLLocation Extension.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
 		};
-		929431371EFB656B0015CF3A /* Controllers */ = {
+		929431371EFB656B0015CF3A /* Main Table */ = {
 			isa = PBXGroup;
 			children = (
 				9294312A1EF75E280015CF3A /* PasseioTableViewController.swift */,
-				9294312D1EF75F590015CF3A /* MapViewController.swift */,
-				929431381EFB65BA0015CF3A /* UIViewController Extension.swift */,
-				922AAA2B1F02109200C65E11 /* NotificationName Extension.swift */,
-				922AAA2D1F03497700C65E11 /* SettingsTableViewController.swift */,
 			);
-			path = Controllers;
+			path = "Main Table";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

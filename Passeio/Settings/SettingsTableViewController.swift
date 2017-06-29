@@ -56,8 +56,6 @@ class SettingsTableViewController: UITableViewController {
         if accuracies.index(of: UserDefaults.standard.double(forKey: Settings.Accuracy.Key)) == nil {
             UserDefaults.standard.set(Settings.Accuracy.Default, forKey: Settings.Accuracy.Key)
         }
-        
-        print("aqui")
     }
     
     override func viewWillAppear(_ animated: Bool) {
