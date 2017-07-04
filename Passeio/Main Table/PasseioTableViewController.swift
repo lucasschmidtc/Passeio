@@ -233,6 +233,12 @@ class PasseioTableViewController: UITableViewController, UISplitViewControllerDe
         }
     }
     
+    private func deleteRow(at indexPath: IndexPath) {
+        tracks.remove(at: indexPath.row)
+        tableView.deleteRows(at: [indexPath], with: .fade)
+        saveTracks()
+    }
+    
     override func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
@@ -259,30 +265,27 @@ class PasseioTableViewController: UITableViewController, UISplitViewControllerDe
     */
     
     override func tableView(_ tableView: UITableView,
-                            commit editingStyle: UITableViewCellEditingStyle,
-                            forRowAt indexPath: IndexPath) {
+                            editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
         
-        if editingStyle == .delete {
-            tracks.remove(at: indexPath.row)
-            tableView.deleteRows(at: [indexPath], with: .fade)
-            saveTracks()
+        let shareAction = UITableViewRowAction(style: .normal, title: "Share") {
+            rowAction, indexPath in
         }
+        //shareAction.backgroundColor = UIColor(patternImage: <#T##UIImage#>)
+        shareAction.backgroundColor = .green
+        
+        let resumeAction = UITableViewRowAction(style: .normal, title: "Resume") {
+            rowAction, indexPath in
+        }
+        resumeAction.backgroundColor = .orange
+        
+        let deleteAction = UITableViewRowAction(style: .destructive, title: "Delete") {
+            rowAction, indexPath in
+            self.deleteRow(at: indexPath)
+        }
+        deleteAction.backgroundColor = .red
+        
+        return [deleteAction, resumeAction, shareAction]
     }
-
-    /*
-    // Override to support rearranging the table view.
-    override func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {
-
-    }
-    */
-
-    /*
-    // Override to support conditional rearranging of the table view.
-    override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the item to be re-orderable.
-        return true
-    }
-    */
     
     // MARK: - Navigation
 
