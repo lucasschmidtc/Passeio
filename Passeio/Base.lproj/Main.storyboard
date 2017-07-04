@@ -73,7 +73,7 @@
                         </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" systemItem="add" id="kX0-Fh-IBU">
                             <connections>
-                                <action selector="record:" destination="Rrd-tF-F5I" id="QTb-jS-iXE"/>
+                                <action selector="newRecording:" destination="Rrd-tF-F5I" id="TbM-NN-ybj"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>

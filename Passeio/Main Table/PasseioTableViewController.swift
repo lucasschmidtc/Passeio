@@ -55,9 +55,6 @@ class PasseioTableViewController: UITableViewController, UISplitViewControllerDe
                                                object: nil,
                                                queue: OperationQueue.main,
                                                using: { [weak self] notification in self?.configureLocationManager() })
-
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
     }
 
     override func didReceiveMemoryWarning() {
@@ -113,7 +110,7 @@ class PasseioTableViewController: UITableViewController, UISplitViewControllerDe
     
     private var locationManager = CLLocationManager()
     
-    private var recordingIsAllowed = false {
+    private var recordingIsAllowed = true {
         didSet {
             if recordingIsAllowed {
                 self.navigationItem.rightBarButtonItem?.isEnabled = true
@@ -168,17 +165,23 @@ class PasseioTableViewController: UITableViewController, UISplitViewControllerDe
     // MARK: - Initiate a Recording
     
     private var currentlyRecording = false
-    @IBAction func record(_ sender: UIBarButtonItem) {
+    private func record() {
         requestAuthorization()
         configureLocationManager()
         if recordingIsAllowed {
-            if currentlyRecording {
-                stopRecording()
-            }
-            else {
-                startRecording()
-            }
+            startRecording()
         }
+    }
+    
+    private var resumeIndexPath: IndexPath? = nil
+    private func resumeRecording(at indexPath: IndexPath) {
+        resumeIndexPath = indexPath
+        record()
+    }
+    
+    @IBAction func newRecording(_ sender: UIBarButtonItem) {
+        resumeIndexPath = nil
+        record()
     }
     
     private var locations = [CLLocation]()
@@ -198,23 +201,31 @@ class PasseioTableViewController: UITableViewController, UISplitViewControllerDe
     private func startRecording() {
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .pause,
                                                                  target: self,
-                                                                 action: #selector(self.record(_:)))
+                                                                 action: #selector(self.stopRecording))
         currentlyRecording = true
         locations.removeAll()
         startedRecordingTimestamp = Date(timeIntervalSinceNow: 0)
         locationManager.startUpdatingLocation()
     }
     
-    private func stopRecording() {
+    @objc private func stopRecording() {
         if currentlyRecording {
             self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add,
                                                                      target: self,
-                                                                     action: #selector(self.record(_:)))
+                                                                     action: #selector(self.newRecording(_:)))
             locationManager.stopUpdatingLocation()
-            tracks.insert(Track(from: locations), at: 0)
-            tableView.insertRows(at: [NSIndexPath(row: 0, section: 0) as IndexPath], with: .top)
             currentlyRecording = false
             startedRecordingTimestamp = nil
+            
+            if let indexPath = resumeIndexPath {
+                tracks[indexPath.row].addSegment(from: locations)
+                tableView.reloadRows(at: [indexPath], with: .fade)
+            }
+            else {
+                tracks.insert(Track(from: locations), at: 0)
+                tableView.insertRows(at: [NSIndexPath(row: 0, section: 0) as IndexPath], with: .top)
+            }
+            
             saveTracks()
         }
     }
@@ -255,15 +266,6 @@ class PasseioTableViewController: UITableViewController, UISplitViewControllerDe
         return cell
     }
     
-
-    /*
-    // Override to support conditional editing of the table view.
-    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the specified item to be editable.
-        return true
-    }
-    */
-    
     override func tableView(_ tableView: UITableView,
                             editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
         
@@ -275,6 +277,7 @@ class PasseioTableViewController: UITableViewController, UISplitViewControllerDe
         
         let resumeAction = UITableViewRowAction(style: .normal, title: "Resume") {
             rowAction, indexPath in
+            self.resumeRecording(at: indexPath)
         }
         resumeAction.backgroundColor = .orange
         
@@ -284,7 +287,10 @@ class PasseioTableViewController: UITableViewController, UISplitViewControllerDe
         }
         deleteAction.backgroundColor = .red
         
-        return [deleteAction, resumeAction, shareAction]
+        if recordingIsAllowed {
+            return [deleteAction, resumeAction, shareAction]
+        }
+        return [deleteAction, shareAction]
     }
     
     // MARK: - Navigation

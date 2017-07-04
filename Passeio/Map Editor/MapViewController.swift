@@ -115,14 +115,13 @@ class MapViewController: UIViewController, MKMapViewDelegate {
         NotificationCenter.default.post(name: .onEdit, object: nil)
         
         // removes the old polyline
-        if let index = (mapView.overlays).index(where: {
+        let oldPolylines = (mapView.overlays).filter {
             if let title = $0.title {
                 return title == Constants.FullLine.title
             }
             return false
-        }) {
-            mapView.remove(mapView.overlays[index])
         }
+        mapView.removeOverlays(oldPolylines)
         
         if track != nil {
             for segment in track.segments {
