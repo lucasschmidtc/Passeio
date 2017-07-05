@@ -24,13 +24,11 @@ class Track: NSObject, NSCoding {
     init(from locations: [CLLocation]) {
         super.init()
         addSegment(from: locations)
-        setPlacemark()
     }
     
     init(from segments: [[Waypoint]]) {
         super.init()
         self.segments = segments
-        setPlacemark()
     }
     
     init(from segments: [[Waypoint]], and placemark: CLPlacemark?) {
