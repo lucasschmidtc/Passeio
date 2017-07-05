@@ -287,10 +287,15 @@ class PasseioTableViewController: UITableViewController, UISplitViewControllerDe
         }
         deleteAction.backgroundColor = .red
         
-        if recordingIsAllowed {
-            return [deleteAction, resumeAction, shareAction]
+        if currentlyRecording {
+            return [shareAction]
         }
-        return [deleteAction, shareAction]
+        else {
+            if recordingIsAllowed {
+                return [deleteAction, resumeAction, shareAction]
+            }
+            return [deleteAction, shareAction]
+        }
     }
     
     // MARK: - Navigation
