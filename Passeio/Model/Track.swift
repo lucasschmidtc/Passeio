@@ -37,9 +37,6 @@ class Track: NSObject, NSCoding {
         super.init()
         self.segments = segments
         self.placemark = placemark
-        if self.placemark == nil {
-            setPlacemark()
-        }
     }
     
     // MARK: - Constants
