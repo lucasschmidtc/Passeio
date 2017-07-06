@@ -278,7 +278,7 @@ class PasseioTableViewController: UITableViewController, UISplitViewControllerDe
         
         let shareAction = UITableViewRowAction(style: .normal, title: "Share") {
             rowAction, indexPath in
-            self.share(track: self.tracks[indexPath.row])
+            self.share(from: indexPath)
         }
         //shareAction.backgroundColor = UIColor(patternImage: <#T##UIImage#>)
         shareAction.backgroundColor = .green
@@ -333,14 +333,18 @@ class PasseioTableViewController: UITableViewController, UISplitViewControllerDe
         return xml
     }
     
-    
-    private func share(track: Track) {
+    private func share(from indexPath: IndexPath) {
+        let track = tracks[indexPath.row]
         let xml = generateXMLString(from: track)
         
         if let data = xml.data(using: String.Encoding.utf8, allowLossyConversion: false) {
             let itemSource = GPXActivityItemSource(with: track.title, and: data)
             let activityViewController = UIActivityViewController(activityItems: [itemSource],
                                                                   applicationActivities: [])
+            if let popoverPresentationController = activityViewController.popoverPresentationController {
+                // TODO: Fix placement of the arrow
+                popoverPresentationController.sourceView = tableView.cellForRow(at: indexPath)
+            }
             self.present(activityViewController, animated: true, completion: nil)
         }
     }
