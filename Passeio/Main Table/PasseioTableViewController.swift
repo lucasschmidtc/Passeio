@@ -71,7 +71,6 @@ class PasseioTableViewController: UITableViewController, UISplitViewControllerDe
         struct Cell {
             struct Identifier {
                 static let summary: String = "Track Summary Cell"
-                static let preview: String = "Map Preview Cell"
             }
         }
         struct Segue {
@@ -84,6 +83,14 @@ class PasseioTableViewController: UITableViewController, UISplitViewControllerDe
         let documentsDirectory = FileManager().urls(for: .documentDirectory, in: .userDomainMask).first!
         return documentsDirectory.appendingPathComponent(Constants.tracksFileName)
     }()
+    
+    private let isoFormatter = ISO8601DateFormatter()
+    
+    private var currentDate: Date {
+        get {
+            return Date(timeIntervalSinceNow: 0)
+        }
+    }
     
     // MARK: - Persistence with NSCoding
     
@@ -204,7 +211,7 @@ class PasseioTableViewController: UITableViewController, UISplitViewControllerDe
                                                                  action: #selector(self.stopRecording))
         currentlyRecording = true
         locations.removeAll()
-        startedRecordingTimestamp = Date(timeIntervalSinceNow: 0)
+        startedRecordingTimestamp = currentDate
         locationManager.startUpdatingLocation()
     }
     
@@ -271,6 +278,7 @@ class PasseioTableViewController: UITableViewController, UISplitViewControllerDe
         
         let shareAction = UITableViewRowAction(style: .normal, title: "Share") {
             rowAction, indexPath in
+            self.share(track: self.tracks[indexPath.row])
         }
         //shareAction.backgroundColor = UIColor(patternImage: <#T##UIImage#>)
         shareAction.backgroundColor = .green
@@ -296,6 +304,36 @@ class PasseioTableViewController: UITableViewController, UISplitViewControllerDe
             }
             return [deleteAction, shareAction]
         }
+    }
+    
+    // MARK: - Share/Export
+    
+    private func generateXMLString(from track: Track) -> String {
+        var xml =   """
+                    <?xml version="1.0" encoding="UTF-8"?>
+                    <gpx xmlns="http://www.topografix.com/GPX/1/1"
+                        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                        version="1.1"
+                        creator="Passeio">
+                        <metadata>
+                            <link href="https://github.com/lucasschmidtc/Passeio">
+                                <text>Passeio</text>
+                            </link>
+                            <time>\(isoFormatter.string(from: currentDate))</time>
+                        </metadata>
+                        <trk>
+                            <name>\(track.title)</name>
+                    """
+        xml += track.generateXMLString() + "\n"
+        xml +=  """
+                    </trk>
+                </gpx>
+                """
+        return xml
+    }
+    
+    private func share(track: Track) {
+        let xml = generateXMLString(from: track)
     }
     
     // MARK: - Navigation
