@@ -333,8 +333,16 @@ class PasseioTableViewController: UITableViewController, UISplitViewControllerDe
         return xml
     }
     
+    
     private func share(track: Track) {
         let xml = generateXMLString(from: track)
+        
+        if let data = xml.data(using: String.Encoding.utf8, allowLossyConversion: false) {
+            let itemSource = GPXActivityItemSource(with: track.title, and: data)
+            let activityViewController = UIActivityViewController(activityItems: [itemSource],
+                                                                  applicationActivities: [])
+            self.present(activityViewController, animated: true, completion: nil)
+        }
     }
     
     // MARK: - Navigation
