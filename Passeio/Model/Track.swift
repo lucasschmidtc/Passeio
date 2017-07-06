@@ -153,15 +153,15 @@ class Track: NSObject, NSCoding {
     // MARK: - GPX
     
     func generateXMLString() -> String {
-        var gpx = ""
+        var xml = ""
         for segment in segments {
-            gpx += "\n        <trkseg>"
+            xml += "\n        <trkseg>"
             for waypoint in segment {
-                gpx += "\n" + waypoint.generateXMLString()
+                xml += "\n" + waypoint.generateXMLString()
             }
-            gpx += "\n        </trkseg>"
+            xml += "\n        </trkseg>"
         }
         
-        return gpx
+        return xml
     }
 }
