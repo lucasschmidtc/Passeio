@@ -341,9 +341,10 @@ class PasseioTableViewController: UITableViewController, UISplitViewControllerDe
             let itemSource = GPXActivityItemSource(with: track.title, and: data)
             let activityViewController = UIActivityViewController(activityItems: [itemSource],
                                                                   applicationActivities: [])
+            
             if let popoverPresentationController = activityViewController.popoverPresentationController {
-                // TODO: Fix placement of the arrow
-                popoverPresentationController.sourceView = tableView.cellForRow(at: indexPath)
+                popoverPresentationController.sourceRect = tableView.rectForRow(at: indexPath)
+                popoverPresentationController.sourceView = tableView
             }
             self.present(activityViewController, animated: true, completion: nil)
         }
