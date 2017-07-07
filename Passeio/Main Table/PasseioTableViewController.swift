@@ -69,9 +69,7 @@ class PasseioTableViewController: UITableViewController, UISplitViewControllerDe
     
     private struct Constants {
         struct Cell {
-            struct Identifier {
-                static let summary: String = "Track Summary Cell"
-            }
+            static let identifier: String = "Track Summary Cell"
         }
         struct Segue {
             static let mapEditor: String = "Map Editor"
@@ -79,10 +77,17 @@ class PasseioTableViewController: UITableViewController, UISplitViewControllerDe
         static let tracksFileName: String = "tracks"
     }
     
-    private let tracksURL: URL = {
-        let documentsDirectory = FileManager().urls(for: .documentDirectory, in: .userDomainMask).first!
-        return documentsDirectory.appendingPathComponent(Constants.tracksFileName)
-    }()
+    private var documentsURL: URL {
+        get {
+            return FileManager().urls(for: .documentDirectory, in: .userDomainMask).first!
+        }
+    }
+    
+    private var tracksURL: URL {
+        get {
+            return documentsURL.appendingPathComponent(Constants.tracksFileName)
+        }
+    }
     
     private let isoFormatter = ISO8601DateFormatter()
     
@@ -266,7 +271,7 @@ class PasseioTableViewController: UITableViewController, UISplitViewControllerDe
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: Constants.Cell.Identifier.summary, for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: Constants.Cell.identifier, for: indexPath)
         cell.textLabel?.text = tracks[indexPath.row].title
         cell.detailTextLabel?.text = tracks[indexPath.row].subtitle
 
@@ -337,15 +342,21 @@ class PasseioTableViewController: UITableViewController, UISplitViewControllerDe
         let track = tracks[indexPath.row]
         let xml = generateXMLString(from: track)
         
-        if let data = xml.data(using: String.Encoding.utf8, allowLossyConversion: false) {
-            let itemSource = GPXActivityItemSource(with: track.title, and: data)
-            let activityViewController = UIActivityViewController(activityItems: [itemSource],
-                                                                  applicationActivities: [])
+        let fileURL = documentsURL.appendingPathComponent("\(track.title).gpx")
+        if (try? xml.write(to: fileURL, atomically: true, encoding: String.Encoding.utf8)) != nil {
+            let activityViewController = UIActivityViewController(activityItems: [fileURL],
+                                                                  applicationActivities: nil)
+            
+            activityViewController.completionWithItemsHandler = {
+                (activityType, completed, returnedItems, error) in
+                try? FileManager.default.removeItem(at: fileURL)
+            }
             
             if let popoverPresentationController = activityViewController.popoverPresentationController {
                 popoverPresentationController.sourceRect = tableView.rectForRow(at: indexPath)
                 popoverPresentationController.sourceView = tableView
             }
+            
             self.present(activityViewController, animated: true, completion: nil)
         }
     }
