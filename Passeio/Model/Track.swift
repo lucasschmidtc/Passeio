@@ -122,13 +122,25 @@ class Track: NSObject, NSCoding {
             if placemark == nil {
                 setPlacemark()
             }
+            else {
+                if let ocean = placemark?.ocean {
+                    return ocean
+                }
+                else {
+                    let location: [String] = [[placemark?.name,
+                                               placemark?.subLocality,
+                                               placemark?.locality, placemark?.inlandWater].flatMap {$0}.first!,
+                                              [placemark?.subAdministrativeArea,
+                                               placemark?.administrativeArea,
+                                               placemark?.country].flatMap {$0}.first!].flatMap {$0}
+                    
+                    if location.count > 0 {
+                        return location.joined(separator: ", ")
+                    }
+                }
+            }
             
-            let location = [placemark?.name, placemark?.subLocality, placemark?.locality,
-                            placemark?.subAdministrativeArea, placemark?.administrativeArea,
-                            placemark?.country, placemark?.inlandWater, placemark?.ocean,
-                            firstWaypoint?.original.latlon, "Location not yet defined"].flatMap {$0}.first!
-            
-            return location
+            return [firstWaypoint?.original.latlon, "Location not yet defined"].flatMap {$0}.first!
         }
     }
     
@@ -136,14 +148,14 @@ class Track: NSObject, NSCoding {
         get {
             var sub: String
             if count == 1 {
-                sub = "1 observation"
+                sub = "1 location"
             }
             else {
-                sub = String(count) + " observations"
+                sub = String(count) + " locations"
             }
             
             if timestamp != nil {
-                sub = sub + " since " + Track.dateFormatter.string(from: timestamp!)
+                sub = sub + " recorded since " + Track.dateFormatter.string(from: timestamp!)
             }
             
             return sub
