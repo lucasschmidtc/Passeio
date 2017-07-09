@@ -91,20 +91,17 @@ class WaypointTests: XCTestCase {
     // tests the coordinate of a Waypoint
     func testCoordinate() {
         // tests the original coordinate
-        XCTAssertEqual(waypoint.original.coordinate.latitude, location.coordinate.latitude)
-        XCTAssertEqual(waypoint.original.coordinate.longitude, location.coordinate.longitude)
+        XCTAssertEqual(waypoint.original.coordinate, location.coordinate)
         
         // updates the coordinate
         let newCoordinate = CLLocationCoordinate2D(latitude: -28.1, longitude: -108.0)
         waypoint.coordinate = newCoordinate
         
         // tests if the new coordinate was correctly set
-        XCTAssertEqual(waypoint.coordinate.latitude, newCoordinate.latitude)
-        XCTAssertEqual(waypoint.coordinate.longitude, newCoordinate.longitude)
+        XCTAssertEqual(waypoint.coordinate, newCoordinate)
         
         // tests if, after a coordinate change, the original one is still kept
-        XCTAssertEqual(waypoint.original.coordinate.latitude, location.coordinate.latitude)
-        XCTAssertEqual(waypoint.original.coordinate.longitude, location.coordinate.longitude)
+        XCTAssertEqual(waypoint.original.coordinate, location.coordinate)
     }
     
     // tests the generation of the XML string (.gpx) from a Waypoint
