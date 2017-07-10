@@ -22,6 +22,7 @@
 		929431341EF885C50015CF3A /* Track.swift in Sources */ = {isa = PBXBuildFile; fileRef = 929431331EF885C50015CF3A /* Track.swift */; };
 		929431361EF8DFE00015CF3A /* CLLocation Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 929431351EF8DFE00015CF3A /* CLLocation Extension.swift */; };
 		929431391EFB65BA0015CF3A /* UIViewController Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 929431381EFB65BA0015CF3A /* UIViewController Extension.swift */; };
+		92CC36901F12F2F1005EA1D1 /* TrackFromLocationsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92CC368F1F12F2F1005EA1D1 /* TrackFromLocationsTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -63,6 +64,7 @@
 		929431331EF885C50015CF3A /* Track.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Track.swift; sourceTree = "<group>"; };
 		929431351EF8DFE00015CF3A /* CLLocation Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CLLocation Extension.swift"; sourceTree = "<group>"; };
 		929431381EFB65BA0015CF3A /* UIViewController Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController Extension.swift"; sourceTree = "<group>"; };
+		92CC368F1F12F2F1005EA1D1 /* TrackFromLocationsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackFromLocationsTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -154,6 +156,7 @@
 		929431101EF756000015CF3A /* PasseioTests */ = {
 			isa = PBXGroup;
 			children = (
+				92CC368F1F12F2F1005EA1D1 /* TrackFromLocationsTests.swift */,
 				923839CF1F11E03000DBE07D /* WaypointTests.swift */,
 				929431131EF756000015CF3A /* Info.plist */,
 			);
@@ -350,6 +353,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				92CC36901F12F2F1005EA1D1 /* TrackFromLocationsTests.swift in Sources */,
 				923839D01F11E03000DBE07D /* WaypointTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
