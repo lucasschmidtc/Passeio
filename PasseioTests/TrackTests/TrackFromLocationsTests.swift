@@ -83,8 +83,8 @@ class TrackFromLocationsTests: XCTestCase {
         waitForExpectations(timeout: 5, handler: nil)
     }
     
+    // similar to the previous test, but this time the location is set to the Pacific Ocean
     func testOceanPlacemarkAndTitle() {
-        // similar to the previous test, but this time the location is set to the Pacific Ocean
         let promise = expectation(description: "Placemark is lazily set")
         let oceanLocation = CLLocation(coordinate: CLLocationCoordinate2D(latitude: -8.78, longitude: -124.51),
                                        altitude: 0.0,
