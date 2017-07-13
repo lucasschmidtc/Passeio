@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		9210C4E81F172F720056DD79 /* RecordingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9210C4E71F172F720056DD79 /* RecordingTests.swift */; };
 		922AAA2C1F02109200C65E11 /* NotificationName Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 922AAA2B1F02109200C65E11 /* NotificationName Extension.swift */; };
 		922AAA2E1F03497700C65E11 /* SettingsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 922AAA2D1F03497700C65E11 /* SettingsTableViewController.swift */; };
 		923839C81F0EEE0200DBE07D /* GPXActivityItemSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 923839C71F0EEE0200DBE07D /* GPXActivityItemSource.swift */; };
@@ -46,6 +47,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		9210C4E71F172F720056DD79 /* RecordingTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordingTests.swift; sourceTree = "<group>"; };
 		922AAA2B1F02109200C65E11 /* NotificationName Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NotificationName Extension.swift"; sourceTree = "<group>"; };
 		922AAA2D1F03497700C65E11 /* SettingsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsTableViewController.swift; sourceTree = "<group>"; };
 		923839C71F0EEE0200DBE07D /* GPXActivityItemSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GPXActivityItemSource.swift; sourceTree = "<group>"; };
@@ -165,6 +167,7 @@
 			children = (
 				92CC36931F1437CD005EA1D1 /* TrackTests */,
 				923839CF1F11E03000DBE07D /* WaypointTests.swift */,
+				9210C4E71F172F720056DD79 /* RecordingTests.swift */,
 				929431131EF756000015CF3A /* Info.plist */,
 			);
 			path = PasseioTests;
@@ -375,6 +378,7 @@
 				92CC36901F12F2F1005EA1D1 /* TrackFromLocationsTests.swift in Sources */,
 				923839D01F11E03000DBE07D /* WaypointTests.swift in Sources */,
 				92CC36921F1437B9005EA1D1 /* TrackFromSegmentsTests.swift in Sources */,
+				9210C4E81F172F720056DD79 /* RecordingTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
