@@ -12,4 +12,6 @@ extension Date {
     static var now : Date {
         return Date(timeIntervalSinceNow: 0)
     }
+    
+    static var GPXFormatter = ISO8601DateFormatter()
 }

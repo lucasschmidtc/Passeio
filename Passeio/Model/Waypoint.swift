@@ -111,11 +111,10 @@ class Waypoint: NSObject, MKAnnotation, NSCoding  {
     
     // MARK: - GPX
     
-    private static let isoFormatter = ISO8601DateFormatter()
     func generateXMLString() -> String {
         return  """
                             <trkpt lat="\(latitude)" lon="\(longitude)">
-                                <time>\(Waypoint.isoFormatter.string(from: location.timestamp))</time>
+                                <time>\(Date.GPXFormatter.string(from: location.timestamp))</time>
                             </trkpt>
                 """
     }

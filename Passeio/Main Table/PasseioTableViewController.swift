@@ -89,8 +89,6 @@ class PasseioTableViewController: UITableViewController, UISplitViewControllerDe
         }
     }
     
-    private let isoFormatter = ISO8601DateFormatter()
-    
     // MARK: - Persistence with NSCoding
     
     private var needsToSave = false
@@ -317,7 +315,7 @@ class PasseioTableViewController: UITableViewController, UISplitViewControllerDe
                             <link href="https://github.com/lucasschmidtc/Passeio">
                                 <text>Passeio</text>
                             </link>
-                            <time>\(isoFormatter.string(from: Date.now))</time>
+                            <time>\(Date.GPXFormatter.string(from: Date.now))</time>
                         </metadata>
                         <trk>
                             <name>\(track.title)</name>
