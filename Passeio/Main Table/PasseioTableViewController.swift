@@ -91,12 +91,6 @@ class PasseioTableViewController: UITableViewController, UISplitViewControllerDe
     
     private let isoFormatter = ISO8601DateFormatter()
     
-    private var currentDate: Date {
-        get {
-            return Date(timeIntervalSinceNow: 0)
-        }
-    }
-    
     // MARK: - Persistence with NSCoding
     
     private var needsToSave = false
@@ -121,7 +115,6 @@ class PasseioTableViewController: UITableViewController, UISplitViewControllerDe
     // MARK: - Request for Location Services
     
     private var locationManager = CLLocationManager()
-    
     private var recordingIsAllowed = true {
         didSet {
             if recordingIsAllowed {
@@ -176,7 +169,16 @@ class PasseioTableViewController: UITableViewController, UISplitViewControllerDe
     
     // MARK: - Initiate a Recording
     
-    private var currentlyRecording = false
+    private var recording: Recording?
+    private var currentlyRecording: Bool {
+        get {
+            if recording == nil {
+                return false
+            }
+            return true
+        }
+    }
+    
     private func record() {
         requestAuthorization()
         configureLocationManager()
@@ -185,23 +187,18 @@ class PasseioTableViewController: UITableViewController, UISplitViewControllerDe
         }
     }
     
-    private var resumeIndexPath: IndexPath? = nil
     private func resumeRecording(at indexPath: IndexPath) {
-        resumeIndexPath = indexPath
+        recording = Recording(with: Date.now, and: indexPath)
         record()
     }
     
     @IBAction func newRecording(_ sender: UIBarButtonItem) {
-        resumeIndexPath = nil
+        recording = Recording(with: Date.now)
         record()
     }
     
-    private var locations = [CLLocation]()
-    private var startedRecordingTimestamp: Date?
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        if startedRecordingTimestamp != nil {
-            self.locations.append(contentsOf: locations.filter { return $0.timestamp >= startedRecordingTimestamp! })
-        }
+        recording!.append(locations)
     }
     
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
@@ -214,9 +211,6 @@ class PasseioTableViewController: UITableViewController, UISplitViewControllerDe
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .pause,
                                                                  target: self,
                                                                  action: #selector(self.stopRecording))
-        currentlyRecording = true
-        locations.removeAll()
-        startedRecordingTimestamp = currentDate
         locationManager.startUpdatingLocation()
     }
     
@@ -226,18 +220,16 @@ class PasseioTableViewController: UITableViewController, UISplitViewControllerDe
                                                                      target: self,
                                                                      action: #selector(self.newRecording(_:)))
             locationManager.stopUpdatingLocation()
-            currentlyRecording = false
-            startedRecordingTimestamp = nil
-            
-            if let indexPath = resumeIndexPath {
-                tracks[indexPath.row].addSegment(from: locations)
+            if let indexPath = recording!.indexPath {
+                tracks[indexPath.row].addSegment(from: recording!.data)
                 tableView.reloadRows(at: [indexPath], with: .fade)
             }
             else {
-                tracks.insert(Track(from: locations), at: 0)
+                tracks.insert(Track(from: recording!.data), at: 0)
                 tableView.insertRows(at: [NSIndexPath(row: 0, section: 0) as IndexPath], with: .top)
             }
             
+            recording = nil
             saveTracks()
         }
     }
@@ -325,7 +317,7 @@ class PasseioTableViewController: UITableViewController, UISplitViewControllerDe
                             <link href="https://github.com/lucasschmidtc/Passeio">
                                 <text>Passeio</text>
                             </link>
-                            <time>\(isoFormatter.string(from: currentDate))</time>
+                            <time>\(isoFormatter.string(from: Date.now))</time>
                         </metadata>
                         <trk>
                             <name>\(track.title)</name>

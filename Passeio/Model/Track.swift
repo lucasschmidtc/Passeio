@@ -102,7 +102,6 @@ class Track: NSObject, NSCoding {
             for location in locations {
                 waypoints.append(Waypoint(from: location))
             }
-            waypoints.sort { return $0.timestamp < $1.timestamp }
             segments.append(waypoints)
         }
     }
