@@ -173,13 +173,13 @@ class TracksTableViewController: UITableViewController, UISplitViewControllerDel
         }
     }
     
-    private func resumeRecording(at indexPath: IndexPath) {
-        recording = Recording(with: Date.now, and: indexPath)
+    @IBAction func newRecording(_ sender: UIBarButtonItem) {
+        recording = Recording()
         record()
     }
     
-    @IBAction func newRecording(_ sender: UIBarButtonItem) {
-        recording = Recording(with: Date.now)
+    private func resumeRecording(at indexPath: IndexPath) {
+        recording = Recording(with: indexPath)
         record()
     }
     

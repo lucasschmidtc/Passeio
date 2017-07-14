@@ -13,7 +13,6 @@ import CoreLocation
 class RecordingTests: XCTestCase {
     var recording: Recording!
     let indexPath = NSIndexPath(row: 1, section: 0) as IndexPath
-    let time = Date.now
     
     let locationA = CLLocation(coordinate: CLLocationCoordinate2D(latitude: 37.33, longitude: -122.03),
                                altitude: 3.1,
@@ -35,7 +34,7 @@ class RecordingTests: XCTestCase {
     
     override func setUp() {
         super.setUp()
-        recording = Recording(with: time, and: indexPath)
+        recording = Recording(with: indexPath)
     }
     
     override func tearDown() {
@@ -45,7 +44,7 @@ class RecordingTests: XCTestCase {
     
     // when it is a new recording there is no indexPath (nil)
     func testNilIndexPath() {
-        let newRecording = Recording(with: time)
+        let newRecording = Recording()
         XCTAssertNil(newRecording.indexPath)
     }
     
@@ -59,7 +58,7 @@ class RecordingTests: XCTestCase {
     func testRemoveCachedLocation() {
         let locations = [cachedLocation, locationA, locationB]
         recording.append(locations)
-        XCTAssertEqual(recording.data.count, 2)
+        XCTAssertEqual(recording.data, [locationA, locationB])
     }
     
     // ensures that the locations are added in a sorted manner (ascending in relation to the timestamp)

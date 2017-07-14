@@ -11,20 +11,20 @@ import CoreLocation
 
 // This class is used as a temporary storage for the CLLocations emitted by the CoreLocationManager. Once a recording
 // is stopped its CLLocations are used to create a new track or to add a new segment to an existing one. Besides
-// being a temporary storage, it also ensures that the CLLocations are valid (captured after the recording started; not
-// a cached location) and that they are sorted (ascending order in relation to the time).
+// being a temporary storage, it also ensures that the CLLocations are valid (captured after the recording started;
+// not a cached location) and that they are sorted (ascending order in relation to the time).
 
 class Recording {
-    private var startTime: Date
+    private let startTime: Date
     private var index: IndexPath?
     private var locations = [CLLocation]()
     
-    init(with time: Date) {
-        startTime = time
+    init() {
+        startTime = Date.now
     }
     
-    init(with time: Date, and indexPath: IndexPath) {
-        startTime = time
+    convenience init(with indexPath: IndexPath?) {
+        self.init()
         index = indexPath
     }
     
