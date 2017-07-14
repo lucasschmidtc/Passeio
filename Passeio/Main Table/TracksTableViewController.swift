@@ -9,7 +9,7 @@
 import UIKit
 import CoreLocation
 
-class PasseioTableViewController: UITableViewController, UISplitViewControllerDelegate, CLLocationManagerDelegate {
+class TracksTableViewController: UITableViewController, UISplitViewControllerDelegate, CLLocationManagerDelegate {
     private var tracks = [Track]()
     
     override func awakeFromNib() {
@@ -56,14 +56,6 @@ class PasseioTableViewController: UITableViewController, UISplitViewControllerDe
                                                queue: OperationQueue.main,
                                                using: { [weak self] notification in self?.configureLocationManager() })
     }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-    }
-    
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-    }
     
     // MARK: - Constants
     
@@ -77,17 +69,7 @@ class PasseioTableViewController: UITableViewController, UISplitViewControllerDe
         static let tracksFileName: String = "tracks"
     }
     
-    private var documentsURL: URL {
-        get {
-            return FileManager().urls(for: .documentDirectory, in: .userDomainMask).first!
-        }
-    }
-    
-    private var tracksURL: URL {
-        get {
-            return documentsURL.appendingPathComponent(Constants.tracksFileName)
-        }
-    }
+    private let documentsURL = FileManager().urls(for: .documentDirectory, in: .userDomainMask).first!
     
     // MARK: - Persistence with NSCoding
     
@@ -95,6 +77,12 @@ class PasseioTableViewController: UITableViewController, UISplitViewControllerDe
     private func willResign() {
         if needsToSave {
             saveTracks()
+        }
+    }
+    
+    private var tracksURL: URL {
+        get {
+            return documentsURL.appendingPathComponent(Constants.tracksFileName)
         }
     }
     
