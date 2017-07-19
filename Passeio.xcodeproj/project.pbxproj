@@ -23,6 +23,7 @@
 		929431341EF885C50015CF3A /* Track.swift in Sources */ = {isa = PBXBuildFile; fileRef = 929431331EF885C50015CF3A /* Track.swift */; };
 		929431361EF8DFE00015CF3A /* CLLocation Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 929431351EF8DFE00015CF3A /* CLLocation Extension.swift */; };
 		929431391EFB65BA0015CF3A /* UIViewController Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 929431381EFB65BA0015CF3A /* UIViewController Extension.swift */; };
+		92B875C41F19BC51006AE648 /* Placeholder Data.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92B875C31F19BC51006AE648 /* Placeholder Data.swift */; };
 		92CC36901F12F2F1005EA1D1 /* TrackFromLocationsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92CC368F1F12F2F1005EA1D1 /* TrackFromLocationsTests.swift */; };
 		92CC36921F1437B9005EA1D1 /* TrackFromSegmentsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92CC36911F1437B9005EA1D1 /* TrackFromSegmentsTests.swift */; };
 		92CC36951F15E886005EA1D1 /* Recording.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92CC36941F15E886005EA1D1 /* Recording.swift */; };
@@ -69,6 +70,7 @@
 		929431331EF885C50015CF3A /* Track.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Track.swift; sourceTree = "<group>"; };
 		929431351EF8DFE00015CF3A /* CLLocation Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CLLocation Extension.swift"; sourceTree = "<group>"; };
 		929431381EFB65BA0015CF3A /* UIViewController Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController Extension.swift"; sourceTree = "<group>"; };
+		92B875C31F19BC51006AE648 /* Placeholder Data.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Placeholder Data.swift"; sourceTree = "<group>"; };
 		92CC368F1F12F2F1005EA1D1 /* TrackFromLocationsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackFromLocationsTests.swift; sourceTree = "<group>"; };
 		92CC36911F1437B9005EA1D1 /* TrackFromSegmentsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackFromSegmentsTests.swift; sourceTree = "<group>"; };
 		92CC36941F15E886005EA1D1 /* Recording.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Recording.swift; sourceTree = "<group>"; };
@@ -176,6 +178,7 @@
 		9294311B1EF756000015CF3A /* PasseioUITests */ = {
 			isa = PBXGroup;
 			children = (
+				92B875C31F19BC51006AE648 /* Placeholder Data.swift */,
 				9294311C1EF756000015CF3A /* PasseioUITests.swift */,
 				9294311E1EF756000015CF3A /* Info.plist */,
 			);
@@ -379,6 +382,7 @@
 				923839D01F11E03000DBE07D /* WaypointTests.swift in Sources */,
 				92CC36921F1437B9005EA1D1 /* TrackFromSegmentsTests.swift in Sources */,
 				9210C4E81F172F720056DD79 /* RecordingTests.swift in Sources */,
+				92B875C41F19BC51006AE648 /* Placeholder Data.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
