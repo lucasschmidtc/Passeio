@@ -7,9 +7,38 @@
 //
 
 import XCTest
+import CoreLocation
+@testable import Passeio
 
 class PasseioUITests: XCTestCase {
+    
+    private func createTrack(from recording: Recorded) -> Track {
+        func randomDouble() -> Double {
+            return Double(arc4random_uniform(20))
+        }
         
+        let secondsBetweenSegments = 500.0
+        let secondsBetweenLocations = 50.0
+        
+        var segments = [[Waypoint]]()
+        var currentDate = recording.date
+        for locations in recording.locations {
+            var segment = [Waypoint]()
+            for location in locations {
+                segment.append(Waypoint(from: CLLocation(coordinate: location,
+                                                         altitude: randomDouble(),
+                                                         horizontalAccuracy: randomDouble(),
+                                                         verticalAccuracy: randomDouble(),
+                                                         timestamp: currentDate)))
+                currentDate.addTimeInterval(secondsBetweenLocations)
+            }
+            segments.append(segment)
+            currentDate.addTimeInterval(secondsBetweenSegments)
+        }
+        
+        return Track(from: segments)
+    }
+ 
     override func setUp() {
         super.setUp()
         
